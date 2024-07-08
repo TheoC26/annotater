@@ -154,7 +154,7 @@ const Onboarding = () => {
             >
               <div className="text-gray-600 font-semibold">For personal</div>
               <div className="text-gray-400 font-medium text-sm">
-                Annotate sources for myself and increase productivity
+                Annotate sources for myself and increase productivity 
               </div>
             </button>
           </div>
