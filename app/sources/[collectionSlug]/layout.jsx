@@ -1,0 +1,335 @@
+"use client";
+import { db } from "@/firebase";
+import {
+  doc,
+  getDoc,
+  deleteDoc,
+  getDocs,
+  collection,
+  where,
+  orderBy,
+  updateDoc,
+  serverTimestamp,
+  query,
+  setDoc,
+} from "firebase/firestore";
+import { useAuth } from "@/context/AuthContext";
+import Card from "@/components/home/Card";
+import NewModal from "@/components/home/NewModal";
+import Row from "@/components/home/Row";
+import AnnotaterLogo from "@/components/svg/AnnotaterLogo";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import DeleteIcon from "@/components/svg/DeleteIcon";
+import { useSource } from "@/context/SourceContext";
+import ProfileModal from "@/components/ProfileModal";
+
+export default function SourcesLayout({ children }) {
+  const { collectionSlug } = useParams();
+  const [modalState, setModalState] = useState(false);
+  const [collections, setCollections] = useState([]);
+  const [fixedCollection, setFixedCollection] = useState(
+    collectionSlug.replace(/%20/g, " ")
+  );
+  const [isAddingCollection, setIsAddingCollection] = useState(false);
+  const [addingCollectionInput, setAddingCollectionInput] = useState("");
+
+  const [collectionExists, setCollectionExists] = useState(true);
+
+  const [userDoc, setUserDoc] = useState(null);
+
+  const { currentUser, logout, authLoading } = useAuth();
+  const { sourceProviderCollections, setSourceProviderCollections } =
+    useSource();
+
+
+  const addCollection = async (collectionNameUpper) => {
+    const collectionName = collectionNameUpper.toLowerCase();
+    const forbiddenChars = ["#", "$", "[", "]", "/", "."];
+    if (forbiddenChars.some((char) => collectionName.includes(char))) {
+      toast.error("Collection name cannot contain special characters");
+      return;
+    }
+    const forbiddenNames = ["favorites", "archived", "my sources"];
+    if (forbiddenNames.includes(collectionName.toLowerCase())) {
+      toast.error("Collection name cannot be a reserved name");
+      return;
+    }
+
+    try {
+      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        const userCollections = userDoc.data().collections;
+        if (!userCollections.includes(collectionName)) {
+          const newCollections = [...userCollections, collectionName];
+          let tempUserInfo = userDoc.data();
+          tempUserInfo.collections = newCollections;
+          await setDoc(userRef, tempUserInfo);
+          setSourceProviderCollections(newCollections);
+        } else {
+          toast.error("Collection already exists");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error adding collection");
+    }
+  };
+
+  const deleteCollection = async (collectionName) => {
+    try {
+      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        const userCollections = userDoc.data().collections;
+        const newCollections = userCollections.filter(
+          (collection) => collection !== collectionName.toLowerCase()
+        );
+        let tempUserInfo = userDoc.data();
+        tempUserInfo.collections = newCollections;
+        await setDoc(userRef, tempUserInfo);
+        setSourceProviderCollections(newCollections);
+
+        const sourcesCollectionRef = collection(db, "sources");
+        console.log(collectionName, "collectionName");
+        const q = query(
+          sourcesCollectionRef,
+          where("mainUser", "==", currentUser.uid),
+          where("collection", "==", collectionName.toLowerCase()),
+          orderBy("createdAt", "desc")
+        );
+        console.log("hi hi");
+        const querySnapshot = await getDocs(q);
+        console.log(querySnapshot.empty, "empty?");
+        querySnapshot.forEach(async (doc) => {
+          await updateDoc(doc.ref, {
+            archiveDate: serverTimestamp(),
+          });
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error deleting collection");
+    } finally {
+      if (
+        collectionSlug != "my sources" &&
+        collectionSlug != "favorites" &&
+        collectionSlug != "archived"
+      ) {
+        {
+          window.location.replace("/sources/my sources");
+        }
+      }
+    }
+  };
+
+  const checkIfUserDocExists = async () => {
+    const userRef = doc(db, "usersv2", currentUser.uid);
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      setUserDoc(userDoc.data());
+      return true;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    console.log(currentUser);
+    if (!currentUser && !authLoading) {
+      window.location.replace("/login");
+    } else if (currentUser) {
+      checkIfUserDocExists().then((exists) => {
+        if (!exists) {
+          window.location.replace("/signup/onboarding");
+        }
+      });
+    }
+  }, [authLoading, currentUser]);
+
+  useEffect(() => {
+    // check for user existing
+    // get all collections for user from firestore
+    // check if current collection (from url) exists within firestore collections -> if it does not then do not display {children} and instead display "This collection does not exist"
+    // update UI (change which one is bolded)
+    // here is the code:
+
+    // if localsotrage has collections, set collections to that
+    const localCollections = JSON.parse(
+      localStorage.getItem("ANNOTATER_COLLECTIONS")
+    );
+    if (localCollections) {
+      setSourceProviderCollections(localCollections);
+    } else {
+      localStorage.setItem("ANNOTATER_COLLECTIONS", JSON.stringify([]));
+    }
+
+    if (!currentUser) return;
+
+    const getCollections = async () => {
+      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        const userCollections = userDoc.data().collections;
+        setSourceProviderCollections(userCollections);
+        localStorage.setItem(
+          "ANNOTATER_COLLECTIONS",
+          JSON.stringify(userCollections)
+        );
+        if (
+          !userCollections.includes(collectionSlug.replace(/%20/g, " ")) &&
+          collectionSlug.replace(/%20/g, " ") != "favorites" &&
+          collectionSlug.replace(/%20/g, " ") != "archived" &&
+          collectionSlug.replace(/%20/g, " ") != "my sources"
+        ) {
+          setCollectionExists(false);
+        }
+      }
+    };
+    getCollections();
+  }, [currentUser]);
+
+  return (
+    <main className="flex flex-row mx-5 my-3 align-top h-full">
+      <div className=" w-72 mt-3">
+        <AnnotaterLogo />
+        <button
+          className="p-4 rounded-full bg-gray-200 flex w-fit mt-6 transition-all hover:scale-105 hover:shadow-lg"
+          onClick={() => setModalState(true)}
+        >
+          <div className="text-3xl leading-6 px-1 pb-1 font-medium rounded-full bg-accent shadow-lg">
+            +
+          </div>
+          <div className="mx-2 text-xl font-medium">New</div>
+        </button>
+        <div className="flex flex-col mt-6 pr-20">
+          <div className="text-xl font-semibold">Collections</div>
+          <div className="flex flex-col mt-3">
+            <div className="flex justify-between mr-2">
+              <Link
+                className={`text-base ${
+                  fixedCollection == "my sources" ? "font-bold" : "font-medium"
+                }`}
+                href={"/sources/my sources"}
+              >
+                My sources
+              </Link>
+              {!isAddingCollection && (
+                <button
+                  className="text-xl leading-tight font-medium"
+                  onClick={() => setIsAddingCollection(true)}
+                >
+                  +
+                </button>
+              )}
+            </div>
+            {/* seperator line */}
+            <div className="w-full h-[1px] bg-black opacity-25"></div>
+
+            <div className="ml-2 flex flex-col">
+              {isAddingCollection && (
+                <div className="flex justify-between">
+                  <input
+                    type="text"
+                    className="text-base mt-1 rounded-md border-2 border-gray-200 w-full"
+                    value={addingCollectionInput}
+                    onChange={(e) => setAddingCollectionInput(e.target.value)}
+                    autoFocus
+                    onBlur={() => {
+                      if (addingCollectionInput.length == 0) {
+                        setIsAddingCollection(false);
+                        return;
+                      }
+                      addCollection(addingCollectionInput);
+                      setIsAddingCollection(false);
+                      setAddingCollectionInput("");
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        if (addingCollectionInput.length == 0) {
+                          setIsAddingCollection(false);
+                          return;
+                        }
+                        addCollection(addingCollectionInput);
+                        setIsAddingCollection(false);
+                        setAddingCollectionInput("");
+                      }
+                    }}
+                  />
+                  {/* <button
+                    className="text-xl leading-tight font-medium"
+                    onClick={() => {
+                      addCollection(addingCollectionInput);
+                      setIsAddingCollection(false);
+                      setAddingCollectionInput("");
+                    }}
+                  >
+                    +
+                  </button> */}
+                </div>
+              )}
+              {sourceProviderCollections.map((collection) => (
+                <div className="flex justify-between items-center mr-1 group">
+                  <Link
+                    className={`text-base mt-1 ${
+                      fixedCollection == collection && "font-bold"
+                    }`}
+                    href={"/sources/" + collection}
+                  >
+                    {collection.replace("%20", " ").charAt(0).toUpperCase() +
+                      collection.replace("%20", " ").slice(1)}
+                  </Link>
+                  <DeleteIcon
+                    className="w-5 h-5 hidden group-hover:block transition-all hover:fill-red-400 hover:scale-110"
+                    onClick={() => deleteCollection(collection)}
+                  />
+                </div>
+              ))}
+
+              {/* <div className="text-base font-medium mt-1">10th Grade</div>
+              <div className="text-base font-medium mt-1">9th Grade</div> */}
+            </div>
+            <Link
+              href={"/sources/favorites"}
+              className="text-base font-semibold mt-2"
+            >
+              Favorites
+            </Link>
+            <Link
+              href={"/sources/archived"}
+              className="text-base font-semibold mt-2"
+            >
+              Archived
+            </Link>
+          </div>
+        </div>
+      </div>
+      <div className="flex-1">
+        <header className="flex justify-between w-full h-fit items-center mt-1 gap-6">
+          <input
+            className="bg-gray-200 flex-1 text-base font-semibold p-2 px-4 rounded-2xl text-black outline-none"
+            placeholder="Search..."
+          ></input>
+          <ProfileModal initial={userDoc && userDoc.name[0].toUpperCase()} />
+        </header>
+        <div className="bg-white w-full h-[85vh] mt-6 rounded-2xl p-6 overflow-scroll">
+          {collectionExists ? (
+            children
+          ) : (
+            <div className="text-center text-lg font-semibold mt-6">
+              This collection does not exist
+            </div>
+          )}
+        </div>
+      </div>
+      {modalState && (
+        <NewModal setModalState={setModalState} collection={fixedCollection} />
+      )}
+      <ToastContainer />
+    </main>
+  );
+}
