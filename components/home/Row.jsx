@@ -18,10 +18,11 @@ const Row = ({
   renameSource,
   favoriteSource,
   favorite,
-  isEditingName,
-  setEditingNameID,
+  // isEditingName,
+  // setEditingNameID,
   sources,
   setSources,
+  collection,
 }) => {
   const [renameText, setRenameText, renameTextRef] = useStateRef("");
   const [favoriteState, setFavoriteState] = useState(favorite);
@@ -80,7 +81,7 @@ const Row = ({
     >
       <div className="flex justify-between my-2">
         <div className="flex justify-between flex-1 pr-3">
-          {isEditingName ? (
+          {/* {isEditingName ? (
             <EditNameInput
               setRenameText={setRenameText}
               renameText={renameText}
@@ -89,8 +90,11 @@ const Row = ({
               setEditingNameID={setEditingNameID}
             />
           ) : (
-            <div className="font-medium">{title}</div>
-          )}
+            <div className="font-medium">{title} • {collection}</div>
+          )} */}
+          <div className="font-medium">
+            {title} • {collection}
+          </div>
           <button onClick={(e) => toggleFav(e)}>
             {favoriteState ? (
               <StarFilledIcon className="rounded transition-all hover:bg-gray-200" />

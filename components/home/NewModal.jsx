@@ -107,9 +107,9 @@ const NewModal = ({ setModalState, collection }) => {
         <div className="mx-12 flex align-middle justify-center flex-col h-full">
           {sourceText.length < 51 && (
             <>
-              <div className="bg-accent rounded-full p-4 px-9 text-lg font-bold text-center mt-6 w-fit mx-auto transition-all cursor-pointer hover:scale-105 hover:shadow-lg">
+              {/* <div className="bg-accent rounded-full p-4 px-9 text-lg font-bold text-center mt-6 w-fit mx-auto transition-all cursor-pointer hover:scale-105 hover:shadow-lg">
                 Upload a PDF
-              </div>
+              </div> */}
               {progress.total === 0 ? (
                 <FileUpload onFileAccepted={handleFileSelect} />
               ) : (

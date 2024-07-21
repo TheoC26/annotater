@@ -1,12 +1,13 @@
 import AnnotationCard from "@/components/about/AnnotationCard";
 import AnnotaterLogo from "@/components/svg/AnnotaterLogo";
 import SmallLogo from "@/components/svg/SmallLogo";
+import Squig from "@/components/svg/Squig";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="">
-      <header className="flex justify-between font-bold p-3 px-5 text-base items-center fixed top-0 w-full bg-gradient-to-b from-white to-transparent">
+      <header className="flex justify-between font-bold p-3 px-5 text-base items-center fixed top-0 w-full bg-gradient-to-b from-white to-transparent z-20">
         <div className="flex items-center gap-12">
           <AnnotaterLogo className="mb-1" />
           <Link href={"/features"} className=" mt-1">
@@ -31,7 +32,8 @@ export default function Home() {
           </Link>
         </div>
       </header>
-      <section className="h-[80vh] flex flex-col items-leading p-16 pt-32 gap-24">
+      <Squig className="w-full h-full absolute -z-10" />
+      <section className="h-[80vh] flex flex-col items-leading p-16 pt-40 gap-24">
         <div className=" text-8xl font-bold">
           Elevate Your <br />{" "}
           <span className=" underline text-accent">Understanding</span>

@@ -13,11 +13,12 @@ const CustomContextMenu = ({
   archiveSource,
   unArchiveSource,
   fullDeleteSource,
-  setEditingNameID,
+  // setEditingNameID,
   updateSourceCollection,
   sourceID,
   collections,
   deleteCollection,
+  setEditNameModalOpen,
 }) => {
   const [organize, setOrganize] = useState(false);
 
@@ -38,7 +39,7 @@ const CustomContextMenu = ({
           <>
             <button
               className="flex gap-2 items-center p-1 hover:bg-gray-100 cursor-pointer rounded-md"
-              onClick={() => setEditingNameID(sourceID)}
+              onClick={() => {setEditNameModalOpen(true)}}
             >
               <EditIcon className="w-5 h-5" />
               <div>Rename</div>
@@ -72,7 +73,7 @@ const CustomContextMenu = ({
           <>
             <button
               className="flex gap-2 items-center p-1 hover:bg-gray-100 cursor-pointer rounded-md"
-              onClick={() => {setEditingNameID(sourceID); console.log(sourceID)}}
+              onClick={() => {setEditNameModalOpen(true)}}
             >
               <EditIcon className="w-5 h-5" />
               <div>Rename</div>

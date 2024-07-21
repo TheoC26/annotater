@@ -10,8 +10,8 @@ import { useSource } from "@/context/SourceContext";
 const Folder = ({
   name,
   setCollections,
-  setEditingNameID,
-  isEditingName,
+  // setEditingNameID,
+  // isEditingName,
   setContextMenuShowing,
   setContextMenuType,
   setContextMenuX,
@@ -74,7 +74,7 @@ const Folder = ({
           <div className="hidden group-hover:block">
             <FolderOpenIcon />
           </div>
-          {isEditingName ? (
+          {/* {isEditingName ? (
             <EditNameInput
               setRenameText={setRenameText}
               renameText={renameText}
@@ -84,7 +84,8 @@ const Folder = ({
             />
           ) : (
             <div className="font-medium">{name}</div>
-          )}
+          )} */}
+          <div className="font-medium">{name}</div>
         </div>
         <div className="flex">
           <button onClick={(e) => onTwoFingerClick(e)}>

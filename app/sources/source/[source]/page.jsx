@@ -413,6 +413,20 @@ const Source = () => {
       );
     }
 
+
+    if (!localStorage.getItem("ANNOTATER_SOURCECONTEXT")) {
+      let newSourceContext = {
+        isAnnotating: false,
+        sourceAnnotatingText: "",
+        sourceCollection: "",
+      };
+      localStorage.setItem(
+        "ANNOTATER_SOURCECONTEXT",
+        JSON.stringify(newSourceContext)
+      );
+    }
+      
+
     const sourceContext = JSON.parse(
       localStorage.getItem("ANNOTATER_SOURCECONTEXT")
     );

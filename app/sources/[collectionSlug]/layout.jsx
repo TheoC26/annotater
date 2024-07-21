@@ -27,6 +27,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DeleteIcon from "@/components/svg/DeleteIcon";
 import { useSource } from "@/context/SourceContext";
 import ProfileModal from "@/components/ProfileModal";
+import RenameDialogue from "@/components/home/RenameDialogue";
+import SearchingModal from "@/components/home/SearchingModal";
 
 export default function SourcesLayout({ children }) {
   const { collectionSlug } = useParams();
@@ -46,6 +48,12 @@ export default function SourcesLayout({ children }) {
   const { sourceProviderCollections, setSourceProviderCollections } =
     useSource();
 
+  const [sources, setSources] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [searching, setSearching] = useState(false);
+  const [search, setSearch] = useState("");
+  const [filteredSources, setFilteredSources] = useState([]);
 
   const addCollection = async (collectionNameUpper) => {
     const collectionName = collectionNameUpper.toLowerCase();
@@ -138,6 +146,36 @@ export default function SourcesLayout({ children }) {
     return false;
   };
 
+  const getSources = async () => {
+    try {
+      const sourcesRef = collection(db, "sources");
+
+      let q = query(
+        sourcesRef,
+        where("mainUser", "==", currentUser.uid),
+        orderBy("createdAt", "desc")
+      );
+
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) return;
+
+      setSources(
+        querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        })
+      );
+      console.log(querySnapshot.docs[0].data());
+      // querySnapshot.forEach((doc) => {
+      //   console.log(doc.id, " => ", doc.data());
+      // });
+    } catch (e) {
+      console.log("error getting sources", e);
+      toast.error("Error getting sources");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     console.log(currentUser);
     if (!currentUser && !authLoading) {
@@ -191,7 +229,22 @@ export default function SourcesLayout({ children }) {
       }
     };
     getCollections();
+    getSources();
   }, [currentUser]);
+
+  useEffect(() => {
+    let filteredSources = sources.filter((source) => {
+      return source.name.toLowerCase().includes(search.toLowerCase());
+    });
+
+    if (search.length == 0) {
+      filteredSources = sources;
+    }
+
+    console.log(filteredSources);
+
+    setFilteredSources(filteredSources);
+  }, [search, searching]);
 
   return (
     <main className="flex flex-row mx-5 my-3 align-top h-full">
@@ -310,9 +363,18 @@ export default function SourcesLayout({ children }) {
       </div>
       <div className="flex-1">
         <header className="flex justify-between w-full h-fit items-center mt-1 gap-6">
+          <SearchingModal
+            sources={filteredSources}
+            searching={searching}
+            setSearching={setSearching}
+          />
           <input
             className="bg-gray-200 flex-1 text-base font-semibold p-2 px-4 rounded-2xl text-black outline-none"
             placeholder="Search..."
+            onBlur={() => setTimeout(() => setSearching(false), 100)}
+            onFocus={() => setSearching(true)}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           ></input>
           <ProfileModal initial={userDoc && userDoc.name[0].toUpperCase()} />
         </header>

@@ -25,6 +25,7 @@ import Folder from "@/components/home/Folder";
 import CustomContextMenu from "@/components/home/CustomContextMenu";
 import { useSource } from "@/context/SourceContext";
 import ArchiveRow from "@/components/home/ArchiveRow";
+import RenameDialogue from "@/components/home/RenameDialogue";
 
 const Collection = () => {
   const { collectionSlug } = useParams();
@@ -58,10 +59,20 @@ const Collection = () => {
     useStateRef("");
   const [contextMenuX, setContextMenuX] = useState(0);
   const [contextMenuY, setContextMenuY] = useState(0);
-  const [editingNameID, setEditingNameID] = useState(null);
+  // const [editingNameID, setEditingNameID] = useState(null);
+  const [editNameModalOpen, setEditNameModalOpen] = useState(false);
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  function getNameFromID(id) {
+    const source = sourcesRef.current && sourcesRef.current.find(
+      (source) => source.id === id
+    )
+      ? sourcesRef.current.find((source) => source.id === id).name
+      : id;
+    return source;
   }
 
   function timeAgo(date1, date2 = new Date()) {
@@ -342,10 +353,12 @@ const Collection = () => {
               setContextMenuY={setContextMenuY}
               setContextMenuSourceID={setContextMenuSourceID}
               setCollections={setSourceProviderCollections}
-              setEditingNameID={setEditingNameID}
-              isEditingName={
-                editingNameID ? collection === editingNameID.toLowerCase() : false
-              }
+              // setEditingNameID={setEditingNameID}
+              // isEditingName={
+              //   editingNameID
+              //     ? collection === editingNameID.toLowerCase()
+              //     : false
+              // }
             />
           ))}
       </div>
@@ -364,7 +377,9 @@ const Collection = () => {
           fixedCollection != "Archived" &&
           sources
             .filter(
-              (source) => (source.collection == fixedCollection.toLowerCase() || fixedCollection == "Favorites")
+              (source) =>
+                source.collection == fixedCollection.toLowerCase() ||
+                fixedCollection == "Favorites"
             )
             .map(
               (source, i) =>
@@ -391,10 +406,11 @@ const Collection = () => {
                     favoriteSource={favoriteSource}
                     favorite={source.favorite}
                     setContextMenuSourceID={setContextMenuSourceID}
-                    isEditingName={source.id === editingNameID}
-                    setEditingNameID={setEditingNameID}
+                    // isEditingName={source.id === editingNameID}
+                    // setEditingNameID={setEditingNameID}
                     sources={sources}
                     setSources={setSources}
+                    collection={capitalizeFirstLetter(source.collection)}
                   />
                 )
             )}
@@ -441,13 +457,24 @@ const Collection = () => {
           unArchiveSource={unArchiveSource}
           favoriteSource={favoriteSource}
           fullDeleteSource={fullDeleteSource}
-          setEditingNameID={setEditingNameID}
+          // setEditingNameID={setEditingNameID}
           sourceID={contextMenuSourceID}
           collections={sourceProviderCollections}
           deleteCollection={deleteCollection}
           updateSourceCollection={updateSourceCollection}
+          setEditNameModalOpen={setEditNameModalOpen}
         />
       )}
+      <RenameDialogue
+        open={editNameModalOpen}
+        setOpen={setEditNameModalOpen}
+        id={contextMenuSourceID}
+        title={getNameFromID(contextMenuSourceID)}
+        sources={sources}
+        setSources={setSources}
+        // setEditingNameID={setEditingNameID}
+        renameSource={renameSource}
+      />
     </>
   );
 };
