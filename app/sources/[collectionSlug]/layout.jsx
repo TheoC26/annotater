@@ -29,6 +29,7 @@ import { useSource } from "@/context/SourceContext";
 import ProfileModal from "@/components/ProfileModal";
 import RenameDialogue from "@/components/home/RenameDialogue";
 import SearchingModal from "@/components/home/SearchingModal";
+import MenuIcon from "@/components/svg/MenuIcon";
 
 export default function SourcesLayout({ children }) {
   const { collectionSlug } = useParams();
@@ -247,62 +248,55 @@ export default function SourcesLayout({ children }) {
   }, [search, searching]);
 
   return (
-    <main className="flex flex-row mx-5 my-3 align-top h-full">
-      <div className=" w-72 mt-3">
-        <AnnotaterLogo />
-        <button
-          className="p-4 rounded-full bg-gray-200 flex w-fit mt-6 transition-all hover:scale-105 hover:shadow-lg"
-          onClick={() => setModalState(true)}
-        >
-          <div className="text-3xl leading-6 px-1 pb-1 font-medium rounded-full bg-accent shadow-lg">
-            +
-          </div>
-          <div className="mx-2 text-xl font-medium">New</div>
-        </button>
-        <div className="flex flex-col mt-6 pr-20">
-          <div className="text-xl font-semibold">Collections</div>
-          <div className="flex flex-col mt-3">
-            <div className="flex justify-between mr-2">
-              <Link
-                className={`text-base ${
-                  fixedCollection == "my sources" ? "font-bold" : "font-medium"
-                }`}
-                href={"/sources/my sources"}
-              >
-                My sources
-              </Link>
-              {!isAddingCollection && (
-                <button
-                  className="text-xl leading-tight font-medium"
-                  onClick={() => setIsAddingCollection(true)}
-                >
-                  +
-                </button>
-              )}
+    <>
+      <main className="hidden flex-row mx-5 my-3 align-top h-full sm:flex">
+        <div className=" w-72 mt-3">
+          <AnnotaterLogo />
+          <button
+            className="p-4 rounded-full bg-gray-200 flex w-fit mt-6 transition-all hover:scale-105 hover:shadow-lg"
+            onClick={() => setModalState(true)}
+          >
+            <div className="text-3xl leading-6 px-1 pb-1 font-medium rounded-full bg-accent shadow-lg">
+              +
             </div>
-            {/* seperator line */}
-            <div className="w-full h-[1px] bg-black opacity-25"></div>
+            <div className="mx-2 text-xl font-medium">New</div>
+          </button>
+          <div className="flex flex-col mt-6 pr-20">
+            <div className="text-xl font-semibold">Collections</div>
+            <div className="flex flex-col mt-3">
+              <div className="flex justify-between mr-2">
+                <Link
+                  className={`text-base ${
+                    fixedCollection == "my sources"
+                      ? "font-bold"
+                      : "font-medium"
+                  }`}
+                  href={"/sources/my sources"}
+                >
+                  My sources
+                </Link>
+                {!isAddingCollection && (
+                  <button
+                    className="text-xl leading-tight font-medium"
+                    onClick={() => setIsAddingCollection(true)}
+                  >
+                    +
+                  </button>
+                )}
+              </div>
+              {/* seperator line */}
+              <div className="w-full h-[1px] bg-black opacity-25"></div>
 
-            <div className="ml-2 flex flex-col">
-              {isAddingCollection && (
-                <div className="flex justify-between">
-                  <input
-                    type="text"
-                    className="text-base mt-1 rounded-md border-2 border-gray-200 w-full"
-                    value={addingCollectionInput}
-                    onChange={(e) => setAddingCollectionInput(e.target.value)}
-                    autoFocus
-                    onBlur={() => {
-                      if (addingCollectionInput.length == 0) {
-                        setIsAddingCollection(false);
-                        return;
-                      }
-                      addCollection(addingCollectionInput);
-                      setIsAddingCollection(false);
-                      setAddingCollectionInput("");
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
+              <div className="ml-2 flex flex-col">
+                {isAddingCollection && (
+                  <div className="flex justify-between">
+                    <input
+                      type="text"
+                      className="text-base mt-1 rounded-md border-2 border-gray-200 w-full"
+                      value={addingCollectionInput}
+                      onChange={(e) => setAddingCollectionInput(e.target.value)}
+                      autoFocus
+                      onBlur={() => {
                         if (addingCollectionInput.length == 0) {
                           setIsAddingCollection(false);
                           return;
@@ -310,10 +304,20 @@ export default function SourcesLayout({ children }) {
                         addCollection(addingCollectionInput);
                         setIsAddingCollection(false);
                         setAddingCollectionInput("");
-                      }
-                    }}
-                  />
-                  {/* <button
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          if (addingCollectionInput.length == 0) {
+                            setIsAddingCollection(false);
+                            return;
+                          }
+                          addCollection(addingCollectionInput);
+                          setIsAddingCollection(false);
+                          setAddingCollectionInput("");
+                        }
+                      }}
+                    />
+                    {/* <button
                     className="text-xl leading-tight font-medium"
                     onClick={() => {
                       addCollection(addingCollectionInput);
@@ -323,46 +327,84 @@ export default function SourcesLayout({ children }) {
                   >
                     +
                   </button> */}
-                </div>
-              )}
-              {sourceProviderCollections.map((collection) => (
-                <div className="flex justify-between items-center mr-1 group">
-                  <Link
-                    className={`text-base mt-1 ${
-                      fixedCollection == collection && "font-bold"
-                    }`}
-                    href={"/sources/" + collection}
-                  >
-                    {collection.replace("%20", " ").charAt(0).toUpperCase() +
-                      collection.replace("%20", " ").slice(1)}
-                  </Link>
-                  <DeleteIcon
-                    className="w-5 h-5 hidden group-hover:block transition-all hover:fill-red-400 hover:scale-110"
-                    onClick={() => deleteCollection(collection)}
-                  />
-                </div>
-              ))}
+                  </div>
+                )}
+                {sourceProviderCollections.map((collection) => (
+                  <div className="flex justify-between items-center mr-1 group">
+                    <Link
+                      className={`text-base mt-1 ${
+                        fixedCollection == collection && "font-bold"
+                      }`}
+                      href={"/sources/" + collection}
+                    >
+                      {collection.replace("%20", " ").charAt(0).toUpperCase() +
+                        collection.replace("%20", " ").slice(1)}
+                    </Link>
+                    <DeleteIcon
+                      className="w-5 h-5 hidden group-hover:block transition-all hover:fill-red-400 hover:scale-110"
+                      onClick={() => deleteCollection(collection)}
+                    />
+                  </div>
+                ))}
 
-              {/* <div className="text-base font-medium mt-1">10th Grade</div>
+                {/* <div className="text-base font-medium mt-1">10th Grade</div>
               <div className="text-base font-medium mt-1">9th Grade</div> */}
+              </div>
+              <Link
+                href={"/sources/favorites"}
+                className="text-base font-semibold mt-2"
+              >
+                Favorites
+              </Link>
+              <Link
+                href={"/sources/archived"}
+                className="text-base font-semibold mt-2"
+              >
+                Archived
+              </Link>
             </div>
-            <Link
-              href={"/sources/favorites"}
-              className="text-base font-semibold mt-2"
-            >
-              Favorites
-            </Link>
-            <Link
-              href={"/sources/archived"}
-              className="text-base font-semibold mt-2"
-            >
-              Archived
-            </Link>
           </div>
         </div>
-      </div>
-      <div className="flex-1">
-        <header className="flex justify-between w-full h-fit items-center mt-1 gap-6">
+        <div className="flex-1">
+          <header className="flex justify-between w-full h-fit items-center mt-1 gap-6">
+            <SearchingModal
+              sources={filteredSources}
+              searching={searching}
+              setSearching={setSearching}
+            />
+            <input
+              className="bg-gray-200 flex-1 text-base font-semibold p-2 px-4 rounded-2xl text-black outline-none"
+              placeholder="Search..."
+              onBlur={() => setTimeout(() => setSearching(false), 100)}
+              onFocus={() => setSearching(true)}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            ></input>
+            <ProfileModal initial={userDoc && userDoc.name[0].toUpperCase()} />
+          </header>
+          <div className="bg-white w-full h-[85vh] mt-6 rounded-2xl p-6 overflow-scroll">
+            {collectionExists ? (
+              children
+            ) : (
+              <div className="text-center text-lg font-semibold mt-6">
+                This collection does not exist
+              </div>
+            )}
+          </div>
+        </div>
+        {modalState && (
+          <NewModal
+            setModalState={setModalState}
+            collection={fixedCollection}
+          />
+        )}
+        <ToastContainer />
+      </main>
+      <main className="block sm:hidden">
+        <header className="w-full p-3 flex gap-3 fixed left-0 top-0 right-0 bg-background">
+          <div className="p-2.5 rounded-xl bg-gray-200">
+            <MenuIcon />
+          </div>
           <SearchingModal
             sources={filteredSources}
             searching={searching}
@@ -378,20 +420,18 @@ export default function SourcesLayout({ children }) {
           ></input>
           <ProfileModal initial={userDoc && userDoc.name[0].toUpperCase()} />
         </header>
-        <div className="bg-white w-full h-[85vh] mt-6 rounded-2xl p-6 overflow-scroll">
-          {collectionExists ? (
-            children
-          ) : (
-            <div className="text-center text-lg font-semibold mt-6">
-              This collection does not exist
-            </div>
-          )}
+        <div className="mt-16">
+          <div className="bg-white w-full h-full mt-6 rounded-2xl p-6 overflow-scroll">
+            {collectionExists ? (
+              children
+            ) : (
+              <div className="text-center text-lg font-semibold mt-6">
+                This collection does not exist
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      {modalState && (
-        <NewModal setModalState={setModalState} collection={fixedCollection} />
-      )}
-      <ToastContainer />
-    </main>
+      </main>
+    </>
   );
 }

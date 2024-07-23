@@ -316,7 +316,7 @@ const Collection = () => {
   return (
     <>
       <div className="text-2xl font-semibold mb-3">{fixedCollection}</div>
-      <div className="grid grid-cols-4 gap-3 w-full">
+      <div className="grid gap-3 w-full grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
         {sources &&
           fixedCollection != "Archived" &&
           sources
@@ -366,7 +366,7 @@ const Collection = () => {
         <>
           <div className="flex w-full justify-between text-base font-semibold mt-6">
             <div>Name</div>
-            <div className=" mr-[164px]">Created</div>
+            <div className="hidden md:block mr-[164px]">Created</div>
           </div>
           <div className="w-full h-[1px] bg-black opacity-25 mt-0.5"></div>
         </>

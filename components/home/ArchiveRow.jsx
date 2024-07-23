@@ -42,11 +42,11 @@ const ArchiveRow = ({
       onContextMenu={(e) => onTwoFingerClick(e)}
     >
       <div className="flex justify-between my-2">
-        <div className=" font-medium">
+        <div className="font-medium line-clamp-1">
           {title} • {collection}
         </div>
         <div className="flex w-56 justify-between">
-          <div className="mr-6 font-medium">{date}</div>
+          <div className="hidden md:block mr-6 font-medium">{date}</div>
           <MoreVert
             onClick={(e) => onTwoFingerClick(e)}
             className="rounded transition-all hover:bg-gray-200"

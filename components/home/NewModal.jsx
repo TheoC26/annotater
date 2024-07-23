@@ -95,7 +95,7 @@ const NewModal = ({ setModalState, collection }) => {
       onClick={() => setModalState(false)}
     >
       <div
-        className="w-[55rem] h-[35rem] bg-white rounded-3xl shadow-lg p-3 relative overflow-hidden cursor-default"
+        className=" w-[30rem] md:w-[40rem] lg:w-[55rem] h-[35rem] bg-white rounded-3xl shadow-lg p-3 relative overflow-hidden cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         <button

@@ -21,7 +21,7 @@ const FileUpload = ({ onFileAccepted }) => {
 
   const dropText = isDragActive
     ? "Drop it like it’s hot…"
-    : "Drag‘n’drop your file here, or click to select files";
+    : "Upload a PDF file";
 
   return (
     <div

@@ -92,7 +92,7 @@ const Row = ({
           ) : (
             <div className="font-medium">{title} • {collection}</div>
           )} */}
-          <div className="font-medium">
+          <div className="font-medium line-clamp-1">
             {title} • {collection}
           </div>
           <button onClick={(e) => toggleFav(e)}>
@@ -103,8 +103,8 @@ const Row = ({
             )}
           </button>
         </div>
-        <div className="flex w-56 justify-between">
-          <div className="mr-6 font-medium">{date}</div>
+        <div className="flex md:w-56 justify-between">
+          <div className="hidden md:block mr-6 font-medium">{date}</div>
           <button onClick={(e) => onTwoFingerClick(e)}>
             <MoreVert className="rounded transition-all hover:bg-gray-200" />
           </button>
