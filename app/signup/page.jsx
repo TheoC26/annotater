@@ -55,6 +55,7 @@ const Signup = () => {
 
   return (
     <main className="bg-white h-full">
+      <div className="fixed inset-0 -z-50 bg-white"></div>
       <header className="flex justify-between font-bold p-3 px-6 text-base items-center">
         <div className="flex items-center gap-12">
           <Link href={"/"}>
@@ -71,7 +72,7 @@ const Signup = () => {
         </div>
       </header>
       <div className="flex justify-center mt-6 md:mt-3">
-        <div className="bg-gradient-to-r mt-16 font-black text-3xl bg-clip-text from-purple to-blue text-accent text-center justify-self-center w-auto sm:text-4xl">
+        <div className="bg-gradient-to-r mt-3 sm:mt-16 font-black text-3xl bg-clip-text from-purple to-blue text-accent text-center justify-self-center w-auto sm:text-4xl">
           Sign up
         </div>
       </div>
@@ -109,7 +110,7 @@ const Signup = () => {
           <div
             className={`${
               (email != "" || password != "") && "hidden"
-            } text-center font-black text-lg my-3 sm:6`}
+            } text-center font-black text-lg mt-3 sm:6`}
           >
             OR
           </div>
