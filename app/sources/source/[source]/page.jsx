@@ -28,6 +28,7 @@ import { useSource } from "@/context/SourceContext";
 import { sendShareEmail } from "@/app/lib/mail";
 import ProfileModal from "@/components/ProfileModal";
 import ShareDialogue from "@/components/ShareDialogue";
+import Logo from "@/components/svg/Logo";
 
 const Source = () => {
   const { source } = useParams();
@@ -605,7 +606,7 @@ const Source = () => {
         <div className="flex justify-between items-center py-3 px-5 bg-background">
           <div className="flex gap-5 flex-1">
             <Link href={"/sources"}>
-              <SmallLogo />
+              <Logo className={"mt-2"} />
             </Link>
             <div className="flex-col w-full pr-12">
               <input

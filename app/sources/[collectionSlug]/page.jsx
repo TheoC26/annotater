@@ -26,6 +26,7 @@ import CustomContextMenu from "@/components/home/CustomContextMenu";
 import { useSource } from "@/context/SourceContext";
 import ArchiveRow from "@/components/home/ArchiveRow";
 import RenameDialogue from "@/components/home/RenameDialogue";
+import Link from "next/link";
 
 const Collection = () => {
   const { collectionSlug } = useParams();
@@ -170,6 +171,57 @@ const Collection = () => {
     }
   };
 
+  const renameCollection = async (newName) => {
+    const collectionName = contextMenuSourceIDRef.current;
+    try {
+      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        const userCollections = userDoc.data().collections;
+        const newCollections = userCollections.map((collection) =>
+          collection === collectionName.toLowerCase()
+            ? newName.toLowerCase()
+            : collection
+        );
+        let tempUserInfo = userDoc.data();
+        tempUserInfo.collections = newCollections;
+        await setDoc(userRef, tempUserInfo);
+        setSourceProviderCollections(newCollections);
+        localStorage.setItem(
+          "ANNOTATER_COLLECTIONS",
+          JSON.stringify(newCollections)
+        );
+
+        const sourcesCollectionRef = collection(db, "sources");
+        const q = query(
+          sourcesCollectionRef,
+          where("mainUser", "==", currentUser.uid),
+          where("collection", "==", collectionName.toLowerCase()),
+          orderBy("createdAt", "desc")
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (doc) => {
+          await updateDoc(doc.ref, {
+            collection: newName.toLowerCase(),
+          });
+        });
+
+
+        const tempSources = sourcesRef.current;
+        tempSources.forEach((source) => {
+          if (source.collection === collectionName.toLowerCase()) {
+            source.collection = newName.toLowerCase();
+          }
+        });
+        setSources(tempSources);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error renaming collection");
+    }
+  };
+
+
   const deleteCollection = async () => {
     const collectionName = contextMenuSourceIDRef.current;
     try {
@@ -184,6 +236,10 @@ const Collection = () => {
         tempUserInfo.collections = newCollections;
         await setDoc(userRef, tempUserInfo);
         setSourceProviderCollections(newCollections);
+        localStorage.setItem(
+          "ANNOTATER_COLLECTIONS",
+          JSON.stringify(newCollections)
+        );
 
         const sourcesCollectionRef = collection(db, "sources");
         console.log(collectionName, "collectionName");
@@ -193,7 +249,6 @@ const Collection = () => {
           where("collection", "==", collectionName.toLowerCase()),
           orderBy("createdAt", "desc")
         );
-        console.log("hi hi");
         const querySnapshot = await getDocs(q);
         console.log(querySnapshot.empty, "empty?");
         querySnapshot.forEach(async (doc) => {
@@ -315,12 +370,29 @@ const Collection = () => {
 
   return (
     <>
-      <div className="text-2xl font-semibold mb-3">{fixedCollection}</div>
+    {
+      fixedCollection != "My sources" ? (
+        <div className="text-2xl mb-3">
+        <Link href={"/sources/my sources"}>My sources</Link>
+        {" > "}
+        <span className="font-semibold">{fixedCollection}</span>
+      </div>) : (
+        <div className="text-2xl mb-3 font-semibold">
+        <span className="font-semibold">{fixedCollection}</span>
+      </div>
+      )
+    }
+      
       <div className="grid gap-3 w-full grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
         {sources &&
           fixedCollection != "Archived" &&
           sources
             .filter((source) => !source.archiveDate)
+            .filter(
+              (source) =>
+                source.collection == fixedCollection.toLowerCase() ||
+                fixedCollection == "My sources"
+            )
             .map(
               (source, i) =>
                 i < 4 && (
@@ -328,6 +400,7 @@ const Collection = () => {
                     key={source.id}
                     id={source.id}
                     title={source.name}
+                    collection={capitalizeFirstLetter(source.collection)}
                     date={timeAgo(new Date(source.createdAt.seconds * 1000))}
                     summary={source.summary}
                     setContextMenuShowing={setContextMenuShowing}
@@ -470,10 +543,18 @@ const Collection = () => {
         setOpen={setEditNameModalOpen}
         id={contextMenuSourceID}
         title={getNameFromID(contextMenuSourceID)}
+        isFolder={
+          sourcesRef.current
+            ? !sourcesRef.current.find(
+                (source) => source.id === contextMenuSourceID
+              )
+            : false
+        }
         sources={sources}
         setSources={setSources}
-        // setEditingNameID={setEditingNameID}
+        setSourceProviderCollections={setSourceProviderCollections}
         renameSource={renameSource}
+        renameCollection={renameCollection}
       />
     </>
   );

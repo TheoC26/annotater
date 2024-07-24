@@ -12,32 +12,40 @@ const RenameDialogue = ({
   id,
   sources,
   setSources,
-//   setEditingNameID,
+  isFolder,
   renameSource,
+  renameCollection,
 }) => {
   const [renameText, setRenameText, renameTextRef] = useStateRef("");
+
+  console.log("isFolder", isFolder);
 
   const submitEditName = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (renameTextRef.current === "") return;
-    renameSource(id, renameTextRef.current);
 
-    const newSources = sources.map((source) => {
-      if (source.id === id) {
-        return { ...source, name: renameTextRef.current };
-      }
-      return source;
-    });
-    console.log(newSources);
-    setSources(newSources);
-    // setEditingNameID("");
-    setRenameText("");
-    setOpen(false);
+    if (isFolder) {
+      renameCollection(renameTextRef.current);
+      setRenameText("");
+      setOpen(false);
+    } else {
+      renameSource(id, renameTextRef.current);
+
+      const newSources = sources.map((source) => {
+        if (source.id === id) {
+          return { ...source, name: renameTextRef.current };
+        }
+        return source;
+      });
+      console.log(newSources);
+      setSources(newSources);
+      setRenameText("");
+      setOpen(false);
+    }
   };
 
-//   const submitEditNameFolder = (e) => {
-
+  //   const submitEditNameFolder = (e) => {
 
   return (
     <>

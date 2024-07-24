@@ -45,11 +45,11 @@ const ProfileModal = ({ initial }) => {
       </button>
       {isOpened && (
         <div
-          className="fixed inset-0 text-left"
+          className="fixed inset-0 text-left z-50"
           onClick={(e) => setIsOpened(false)}
         >
           <div
-            className="absolute right-6 top-20 bg-white p-6 px-5 rounded-xl shadow-md"
+            className="absolute right-6 top-20 bg-white p-6 px-5 rounded-xl shadow-md z-50"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();

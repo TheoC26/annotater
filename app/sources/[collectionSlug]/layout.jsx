@@ -30,6 +30,8 @@ import ProfileModal from "@/components/ProfileModal";
 import RenameDialogue from "@/components/home/RenameDialogue";
 import SearchingModal from "@/components/home/SearchingModal";
 import MenuIcon from "@/components/svg/MenuIcon";
+import Logo from "@/components/svg/Logo";
+import LongLogo from "@/components/svg/LongLogo";
 
 export default function SourcesLayout({ children }) {
   const { collectionSlug } = useParams();
@@ -249,9 +251,9 @@ export default function SourcesLayout({ children }) {
 
   return (
     <>
-      <main className="hidden flex-row mx-5 my-3 align-top h-full sm:flex">
-        <div className=" w-72 mt-3">
-          <AnnotaterLogo />
+      <main className="flex flex-row mx-5 my-3 align-top h-full sm:flex">
+        <div className=" w-72 mt-3 hidden sm:block">
+          <LongLogo />
           <button
             className="p-4 rounded-full bg-gray-200 flex w-fit mt-6 transition-all hover:scale-105 hover:shadow-lg"
             onClick={() => setModalState(true)}
@@ -264,7 +266,7 @@ export default function SourcesLayout({ children }) {
           <div className="flex flex-col mt-6 pr-20">
             <div className="text-xl font-semibold">Collections</div>
             <div className="flex flex-col mt-3">
-              <div className="flex justify-between mr-2">
+              <div className="flex justify-between rounded-md hover:bg-gray-200 pl-1 -ml-1 pr-3">
                 <Link
                   className={`text-base ${
                     fixedCollection == "my sources"
@@ -330,9 +332,9 @@ export default function SourcesLayout({ children }) {
                   </div>
                 )}
                 {sourceProviderCollections.map((collection) => (
-                  <div className="flex justify-between items-center mr-1 group">
+                  <div className="flex justify-between items-center group rounded-md hover:bg-gray-200 pl-1 -ml-1 pr-2 pb-1 -mb-1">
                     <Link
-                      className={`text-base mt-1 ${
+                      className={`text-base mt-1 w-full ${
                         fixedCollection == collection && "font-bold"
                       }`}
                       href={"/sources/" + collection}
@@ -341,7 +343,7 @@ export default function SourcesLayout({ children }) {
                         collection.replace("%20", " ").slice(1)}
                     </Link>
                     <DeleteIcon
-                      className="w-5 h-5 hidden group-hover:block transition-all hover:fill-red-400 hover:scale-110"
+                      className="w-5 h-5 hidden cursor-pointer group-hover:block transition-all hover:fill-red-400 hover:scale-110"
                       onClick={() => deleteCollection(collection)}
                     />
                   </div>
@@ -382,7 +384,7 @@ export default function SourcesLayout({ children }) {
             ></input>
             <ProfileModal initial={userDoc && userDoc.name[0].toUpperCase()} />
           </header>
-          <div className="bg-white w-full h-[85vh] mt-6 rounded-2xl p-6 overflow-scroll">
+          <div className="bg-white w-full h-[85vh] mt-6 rounded-2xl p-6 overflow-scroll relative">
             {collectionExists ? (
               children
             ) : (
@@ -400,7 +402,7 @@ export default function SourcesLayout({ children }) {
         )}
         <ToastContainer />
       </main>
-      <main className="block sm:hidden">
+      {/* <main className="hidden sm:hidden">
         <header className="w-full p-3 flex gap-3 fixed left-0 top-0 right-0 bg-background">
           <div className="p-2.5 rounded-xl bg-gray-200">
             <MenuIcon />
@@ -421,7 +423,7 @@ export default function SourcesLayout({ children }) {
           <ProfileModal initial={userDoc && userDoc.name[0].toUpperCase()} />
         </header>
         <div className="mt-16">
-          <div className="bg-white w-full h-full mt-6 rounded-2xl p-6 overflow-scroll">
+          <div className=" bg-white w-full h-full mt-6 rounded-2xl p-6 overflow-scroll relative">
             {collectionExists ? (
               children
             ) : (
@@ -431,7 +433,7 @@ export default function SourcesLayout({ children }) {
             )}
           </div>
         </div>
-      </main>
+      </main> */}
     </>
   );
 }

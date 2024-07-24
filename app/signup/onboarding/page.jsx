@@ -11,6 +11,8 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "@/context/AuthContext";
 import SmallLogo from "@/components/svg/SmallLogo";
+import Logo from "@/components/svg/Logo";
+import LogoS from "@/components/svg/LogoS";
 
 const content = [
   {
@@ -100,7 +102,7 @@ const Onboarding = () => {
   return (
     <main className="w-full flex p-12 px-24 gap-12 h-[100vh] bg-white">
       <div className="flex-1 h-full border-4 border-background rounded-2xl p-5 relative">
-        <SmallLogo />
+        <Logo />
         <div className=" font-extrabold text-gray-600 text-2xl mt-5 mb-2">
           {headerContent}
         </div>
@@ -154,7 +156,7 @@ const Onboarding = () => {
             >
               <div className="text-gray-600 font-semibold">For personal</div>
               <div className="text-gray-400 font-medium text-sm">
-                Annotate sources for myself and increase productivity 
+                Annotate sources for myself and increase productivity
               </div>
             </button>
           </div>
@@ -221,8 +223,8 @@ const Onboarding = () => {
         )}
       </div>
       <div class="flex-1 h-full bg-gradient-to-br from-accent to-indigo-300 rounded-2xl flex items-center justify-center">
-            <SmallLogo stroke="white" className="scale-[3]" />
-          </div>
+        <LogoS stroke="white" className="scale-[3]" />
+      </div>
     </main>
   );
 };

@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import AnnotaterLogo from "@/components/svg/AnnotaterLogo";
 import Image from "next/image";
+import Logo from "@/components/svg/Logo";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -58,7 +59,7 @@ const Login = () => {
       <header className="flex justify-between font-bold p-3 px-6 text-base items-center">
         <div className="flex items-center gap-12">
           <Link href={"/"}>
-            <AnnotaterLogo />
+            <Logo />
           </Link>
           <Link href={"/features"} className=" mt-1">
             Features

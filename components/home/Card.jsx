@@ -7,6 +7,7 @@ const Card = ({
   title,
   date,
   summary,
+  collection,
   id,
   setContextMenuShowing,
   setContextMenuType,
@@ -53,8 +54,11 @@ const Card = ({
       onContextMenu={(e) => onTwoFingerClick(e)}
     >
       <div className="text-sm line-clamp-1 font-semibold mb-2">{title}</div>
-      <div className="h-[73%] bg-white overflow-hidden rounded-xl text-xs p-2 text-gray-400 shadow-inner shadow-gray-200">
-        {summary}
+      <div className="h-[73%] bg-white overflow-hidden rounded-xl text-xs p-2 text-gray-400 shadow-inner shadow-gray-200 relative">
+        <div>
+          {summary}
+        </div>
+        <div className="absolute bottom-0 right-0 p-1 px-2 rounded-tl-md bg-gray-100 text-gray-600 font-bold">{collection}</div>
       </div>
       <div className="flex justify-between items-center">
         <div className="text-xs font-bold text-gray-500 mt-2">{date}</div>

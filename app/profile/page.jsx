@@ -22,6 +22,7 @@ import capitalizeFirstLetter from "../lib/utils";
 import Link from "next/link";
 import EditIcon from "@/components/svg/EditIcon";
 import SourcesIcon from "@/components/svg/SourcesIcon";
+import Footer from "@/components/Footer";
 
 const ProfilePage = () => {
   const { currentUser, logout, authLoading } = useAuth();
@@ -239,6 +240,7 @@ const ProfilePage = () => {
             </div>
           </main>
           <ToastContainer />
+          <Footer />
         </>
       )}
     </div>
