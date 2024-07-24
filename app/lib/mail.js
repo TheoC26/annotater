@@ -154,7 +154,7 @@ export async function sendShareEmail(
                                                     <table class="heading_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation">
                                                         <tr>
                                                             <td class="pad">
-                                                                <h1 style="margin: 0; color: #b4aadc; direction: ltr; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 38px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;"><span>${name} shared a source on Annotater</span></h1>
+                                                                <h1 style="margin: 0; color: #b4aadc; direction: ltr; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 38px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;"><span>${name} shared a source on Sigmanotes</span></h1>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -191,7 +191,7 @@ export async function sendShareEmail(
                                                         <tr>
                                                             <td class="pad">
                                                                 <div class="alignment" align="center">
-                                                                    <a href="https://annotater-nine.vercel.app/sources/source/${sourceID}" target="_blank" style="background-color:#c6bcef;border-bottom:1px solid transparent;border-left:1px solid transparent;border-radius:13px;border-right:1px solid transparent;border-top:1px solid transparent;color:#ffffff;display:inline-block;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:700;padding-bottom:5px;padding-top:5px;text-align:center;text-decoration:none;width:auto;"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;line-height: 32px;">View the source!</span></a>
+                                                                    <a href="https://sigmanotes.vercel.app/sources/source/${sourceID}" target="_blank" style="background-color:#c6bcef;border-bottom:1px solid transparent;border-left:1px solid transparent;border-radius:13px;border-right:1px solid transparent;border-top:1px solid transparent;color:#ffffff;display:inline-block;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:700;padding-bottom:5px;padding-top:5px;text-align:center;text-decoration:none;width:auto;"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;line-height: 32px;">View the source!</span></a>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -229,9 +229,9 @@ export async function sendShareEmail(
 																<div class="alignment" align="center">
 																	<table class="social-table" width="141px" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;">
 																		<tr>
-																			<td style="padding:0 15px 0 0px;"><a href="https://twitter.com/annotater" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-default-gray/twitter@2x.png" width="32" height="auto" alt="Twitter" title="Twitter" style="display: block; height: auto; border: 0;"></a></td>
-																			<td style="padding:0 15px 0 0px;"><a href="https://www.instagram.com/annotater.app" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-default-gray/instagram@2x.png" width="32" height="auto" alt="Instagram" title="Instagram" style="display: block; height: auto; border: 0;"></a></td>
-																			<td style="padding:0 15px 0 0px;"><a href="https://www.tiktok.com/@annotaterapp" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-default-gray/tiktok@2x.png" width="32" height="auto" alt="TikTok" title="TikTok" style="display: block; height: auto; border: 0;"></a></td>
+																			<td style="padding:0 15px 0 0px;"><a href="https://twitter.com/sigmanotes" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-default-gray/twitter@2x.png" width="32" height="auto" alt="Twitter" title="Twitter" style="display: block; height: auto; border: 0;"></a></td>
+																			<td style="padding:0 15px 0 0px;"><a href="https://www.instagram.com/sigmanotes" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-default-gray/instagram@2x.png" width="32" height="auto" alt="Instagram" title="Instagram" style="display: block; height: auto; border: 0;"></a></td>
+																			<td style="padding:0 15px 0 0px;"><a href="https://www.tiktok.com/@sigmanotes" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-default-gray/tiktok@2x.png" width="32" height="auto" alt="TikTok" title="TikTok" style="display: block; height: auto; border: 0;"></a></td>
 																		</tr>
 																	</table>
 																</div>
@@ -250,7 +250,7 @@ export async function sendShareEmail(
 															<td class="pad">
 																<div style="font-family: sans-serif">
 																	<div class style="font-size: 12px; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #C0C0C0; line-height: 1.2;">
-																		<p style="margin: 0; font-size: 12px; text-align: center; mso-line-height-alt: 14.399999999999999px;"><span style="color:#C0C0C0;">Copyright © 2024 Annotater, All rights reserved.<br></span></p>
+																		<p style="margin: 0; font-size: 12px; text-align: center; mso-line-height-alt: 14.399999999999999px;"><span style="color:#C0C0C0;">Copyright © 2024 Sigma Notes, All rights reserved.<br></span></p>
 																	</div>
 																</div>
 															</td>
@@ -279,7 +279,7 @@ export async function sendShareEmail(
   await sendMail({
     to: to,
     name: name,
-    subject: "Annotater Source Share",
+    subject: "Sigma note shared with you: " + sourceTitle,
     body: body,
   });
 }

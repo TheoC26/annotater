@@ -23,6 +23,7 @@ import Link from "next/link";
 import EditIcon from "@/components/svg/EditIcon";
 import SourcesIcon from "@/components/svg/SourcesIcon";
 import Footer from "@/components/Footer";
+import Logo from "@/components/svg/Logo";
 
 const ProfilePage = () => {
   const { currentUser, logout, authLoading } = useAuth();
@@ -122,7 +123,7 @@ const ProfilePage = () => {
         <>
           <header className="flex justify-between w-full h-fit items-center mt-1 gap-6 p-3 px-5">
             <Link href={"/sources"}>
-              <AnnotaterLogo className="mb-1" />
+              <Logo className="mb-1" />
             </Link>
 
             <div className="flex items-center gap-6">
@@ -137,7 +138,7 @@ const ProfilePage = () => {
               <ProfileModal initial={userDoc.name[0].toUpperCase()} />
             </div>
           </header>
-          <main className=" max-w-2xl mx-auto mt-6">
+          <main className="max-w-2xl mx-auto mt-6 px-2">
             <div className="text-5xl font-bold">Profile</div>
             <div className="text-lg font-semibold mt-12">Personal Info</div>
             <div className="mt-2 p-6 rounded-2xl bg-white -ml-1">
