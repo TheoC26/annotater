@@ -33,6 +33,19 @@ body {
   }
 }
 
+.annotatedSource span {
+  background-color: #C6BCEF8a;
+    padding: 2.3px;
+    cursor: pointer;
+    transition: all ease-in-out 150ms;
+}
+.annotatedSource span:hover {
+  background-color: #c6bcefd6;
+}
+.annotatedSource .selected-span {
+  background-color: #C6BCEF;
+}
+
 #commentBox::after {
   /* a small triangle that appears on the left side that makes it look like a speach bubble */
   content: '';
@@ -47,6 +60,20 @@ body {
   margin-top: -10px;
   /* make it a triangle using clip */
   clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* if the screen is less than 768 then make the commentBox::after on the top of the commentBox */
+@media (max-width: 768px) {
+  #commentBox::after {
+    top: 0px;
+    left: 20%;
+    transform: translateX(-50%);
+    border: 10px solid transparent;
+    border-bottom-color: #C6BCEF;
+    border-top: 0;
+    margin-left: -10px;
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+  }
 }
 
 .loadingAnimatedGradient {

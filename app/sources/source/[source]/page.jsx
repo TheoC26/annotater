@@ -74,6 +74,8 @@ const Source = () => {
 
   const [userDoc, setUserDoc] = useState(null);
 
+  const [isEditingName, setIsEditingName] = useState(false);
+
   const checkIfUserDocExists = async () => {
     const userRef = doc(db, "usersv2", currentUser.uid);
     const userDoc = await getDoc(userRef);
@@ -414,7 +416,6 @@ const Source = () => {
       );
     }
 
-
     if (!localStorage.getItem("ANNOTATER_SOURCECONTEXT")) {
       let newSourceContext = {
         isAnnotating: false,
@@ -426,7 +427,6 @@ const Source = () => {
         JSON.stringify(newSourceContext)
       );
     }
-      
 
     const sourceContext = JSON.parse(
       localStorage.getItem("ANNOTATER_SOURCECONTEXT")
@@ -576,6 +576,7 @@ const Source = () => {
       );
 
       const rect = currentSpan.getBoundingClientRect();
+      console.log(rect)
 
       const spans = annotatedSourceRef.current.querySelectorAll("span");
       // on click set the current span to the clicked span
@@ -586,7 +587,11 @@ const Source = () => {
       currentSpan.classList.add("selected-span");
 
       commentBoxRef.current.style.display = "block";
-      commentBoxRef.current.style.top = `${rect.top + window.scrollY - 20}px`;
+      if (window.innerWidth > 768) {
+        commentBoxRef.current.style.top = `${rect.top + window.scrollY - 20}px`;
+      } else {
+        commentBoxRef.current.style.top = `${rect.top + window.scrollY + rect.height + 10}px`;
+      }
       // commentBoxTitleRef.current.innerText = comment.type.toUpperCase();
       // commentBoxContentRef.current.innerText = comment.content;
       setCommentTitle(comment.type.toUpperCase());
@@ -608,14 +613,30 @@ const Source = () => {
             <Link href={"/sources"}>
               <Logo className={"mt-2"} />
             </Link>
-            <div className="flex-col w-full pr-12">
-              <input
-                className="font-bold text-xl w-full bg-transparent pl-2 -ml-2"
+            <div className="flex-col w-full pr-6">
+              {/* <input
+                className="font-bold text-base md:text-xl w-full bg-transparent pl-2 -ml-2"
                 value={titleText}
                 onChange={(e) => setTitleText(e.target.value)}
                 onKeyUp={processTitleChange}
-              />
-              <div className="font-bold capitalize text-xs">
+              /> */}
+              {isEditingName ? (
+                <input
+                  className="font-bold text-base md:text-xl w-full bg-transparent pl-2 -ml-2"
+                  value={titleText}
+                  onChange={(e) => setTitleText(e.target.value)}
+                  onKeyUp={processTitleChange}
+                />
+              ) : (
+                <div
+                  className="font-bold text-base md:text-xl w-full bg-transparent pl-2 -ml-2 line-clamp-1"
+                  onClick={() => setIsEditingName(true)}
+                >
+                  {titleText}
+                </div>
+              )}
+
+              <div className="font-bold capitalize text-[10px] md:text-xs">
                 {sourceCollection.toUpperCase()}
               </div>
             </div>
@@ -623,17 +644,17 @@ const Source = () => {
           <div className="flex items-center justify-between gap-4">
             <Link
               href={"/sources"}
-              className="p-3 px-6 bg-gray-200 rounded-full flex gap-2 transition-all hover:scale-105 hover:shadow-lg hover:bg-accent"
+              className="p-3 px-4 md:px-6 bg-gray-200 rounded-full flex gap-2 transition-all hover:scale-105 hover:shadow-lg hover:bg-accent"
             >
               <SourcesIcon />
-              <div className="font-semibold">Sources</div>
+              <div className="font-semibold hidden md:block">Sources</div>
             </Link>
             <button
               onClick={() => setShareDialogueOpen(!shareDialogueOpen)}
-              className="p-3 px-6 bg-gray-200 rounded-full flex gap-2 transition-all hover:scale-105 hover:shadow-lg hover:bg-accent"
+              className="p-3 px-4 md:px-6 bg-gray-200 rounded-full flex gap-2 transition-all hover:scale-105 hover:shadow-lg hover:bg-accent"
             >
               <ShareIcon />
-              <div className="font-semibold">Share</div>
+              <div className="font-semibold hidden md:block">Share</div>
             </button>
             <ProfileModal initial={userDoc && userDoc.name[0].toUpperCase()} />
           </div>
@@ -643,11 +664,13 @@ const Source = () => {
       <div className="h-20"></div>
       {isValidDocument ? (
         <>
-          <div className="fixed left-6 top-36 flex flex-col">
-            <div className="text-sm font-semibold mb-2">Outline</div>
+          <div className="fixed left-0 md:left-6 top-[4.5rem] bg-background shadow-sm md:shadow-none md:top-36 w-full md:w-auto justify-around flex md:flex-col z-20">
+            <div className="text-sm font-semibold mb-2 hidden md:block">
+              Outline
+            </div>
             <Link
               href={"#Annotated Source"}
-              className={`text-lg ${
+              className={`text-base sm:text-lg ${
                 currentOutline === "Annotated Source" && "underline"
               }`}
               // onClick={() => {
@@ -658,7 +681,7 @@ const Source = () => {
             </Link>
             <Link
               href={"#Summary"}
-              className={`text-lg ${
+              className={`text-base sm:text-lg ${
                 currentOutline === "Summary" && "underline"
               }`}
               // onClick={() => {
@@ -669,7 +692,9 @@ const Source = () => {
             </Link>
             <Link
               href={"#Notes"}
-              className={`text-lg ${currentOutline === "Notes" && "underline"}`}
+              className={`text-base sm:text-lg ${
+                currentOutline === "Notes" && "underline"
+              }`}
               // onClick={() => {
               //   setCurrentOutline("Notes");
               // }}
@@ -678,7 +703,7 @@ const Source = () => {
             </Link>
             <Link
               href={"#Analysis"}
-              className={`text-lg ${
+              className={`text-base sm:text-lg ${
                 currentOutline === "Analysis" && "underline"
               }`}
               // onClick={() => {
@@ -695,11 +720,11 @@ const Source = () => {
             title={commentTitle}
             content={commentContent}
           />
-          <main className="ml-52 mr-80 pt-6">
+          <main className="ml-6 md:ml-52 mr-6 lg:mr-80 pt-6">
             <Section title={"Annotated Source"} isLoading={isLoading}>
               <div
                 ref={annotatedSourceRef}
-                className={`annotatedSource ${isLoading && "hidden"}`}
+                className={`annotatedSource ${isLoading ? "hidden" : ""}`}
                 // dangerouslySetInnerHTML={{ __html: commentsText }}
               ></div>
             </Section>

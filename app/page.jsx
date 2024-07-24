@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Footer from "@/components/Footer";
 import AnnotationCard from "@/components/about/AnnotationCard";
 import AnnotateIcon from "@/components/svg/AnnotateIcon";
@@ -17,8 +17,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function Home() {
-
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
@@ -50,7 +49,10 @@ export default function Home() {
           <div className="md:hidden mt-1">
             <LongLogo className="mb-1 ml-3" />
           </div>
-          <button className="md:hidden scale-110" onClick={() => setMenuOpen(!menuOpen)}>
+          <button
+            className={`md:hidden ${!menuOpen && "scale-110"}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             {menuOpen ? <CloseIcon /> : <MenuIcon />}
           </button>
         </header>
@@ -79,14 +81,18 @@ export default function Home() {
             content={
               "This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious"
             }
-            styles={"left-16 lg:left-auto lg:right-10 xl:right-32 rotate-6 lg:rotate-12 scale-110 top-[23rem] md:top-[25rem] lg:top-32 xl:top-48"}
+            styles={
+              "left-16 lg:left-auto lg:right-10 xl:right-32 rotate-6 lg:rotate-12 scale-110 top-[23rem] md:top-[25rem] lg:top-32 xl:top-48"
+            }
           />
           <AnnotationCard
             type={"analysis"}
             content={
               "This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious"
             }
-            styles={"hidden md:block right-10 lg:right-32 xl:right-80 -rotate-3 scale-105 top-[25rem] lg:top-[20rem] xl:top-[25rem]"}
+            styles={
+              "hidden md:block right-10 lg:right-32 xl:right-80 -rotate-3 scale-105 top-[25rem] lg:top-[20rem] xl:top-[25rem]"
+            }
           />
         </section>
         <section className="max-w-screen-2xl mx-auto">

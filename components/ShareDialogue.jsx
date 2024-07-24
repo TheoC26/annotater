@@ -43,7 +43,7 @@ const ShareDialogue = ({
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-[35rem] bg-white rounded-2xl shadow-lg p-6"
+            className="w-full sm:w-[35rem] bg-white rounded-2xl shadow-lg p-6"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
