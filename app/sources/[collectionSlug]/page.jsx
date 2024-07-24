@@ -27,6 +27,7 @@ import { useSource } from "@/context/SourceContext";
 import ArchiveRow from "@/components/home/ArchiveRow";
 import RenameDialogue from "@/components/home/RenameDialogue";
 import Link from "next/link";
+import ShareDialogue from "@/components/ShareDialogue";
 
 const Collection = () => {
   const { collectionSlug } = useParams();
@@ -62,17 +63,19 @@ const Collection = () => {
   const [contextMenuY, setContextMenuY] = useState(0);
   // const [editingNameID, setEditingNameID] = useState(null);
   const [editNameModalOpen, setEditNameModalOpen] = useState(false);
+  const [shareDialogueOpen, setShareDialogueOpen] = useState(false);
+  const [userDoc, setUserDoc] = useState(null);
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   function getNameFromID(id) {
-    const source = sourcesRef.current && sourcesRef.current.find(
-      (source) => source.id === id
-    )
-      ? sourcesRef.current.find((source) => source.id === id).name
-      : id;
+    const source =
+      sourcesRef.current &&
+      sourcesRef.current.find((source) => source.id === id)
+        ? sourcesRef.current.find((source) => source.id === id).name
+        : id;
     return source;
   }
 
@@ -206,7 +209,6 @@ const Collection = () => {
           });
         });
 
-
         const tempSources = sourcesRef.current;
         tempSources.forEach((source) => {
           if (source.collection === collectionName.toLowerCase()) {
@@ -220,7 +222,6 @@ const Collection = () => {
       toast.error("Error renaming collection");
     }
   };
-
 
   const deleteCollection = async () => {
     const collectionName = contextMenuSourceIDRef.current;
@@ -359,6 +360,17 @@ const Collection = () => {
     if (!currentUser) return;
 
     // getCollections();
+
+    // get userDoc
+    const getUserDoc = async () => {
+      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        setUserDoc(userDoc.data());
+      }
+    };
+    getUserDoc();
+
     getSources();
   }, [currentUser]);
 
@@ -370,19 +382,18 @@ const Collection = () => {
 
   return (
     <>
-    {
-      fixedCollection != "My sources" ? (
+      {fixedCollection != "My sources" ? (
         <div className="text-2xl mb-3">
-        <Link href={"/sources/my sources"}>My sources</Link>
-        {" > "}
-        <span className="font-semibold">{fixedCollection}</span>
-      </div>) : (
+          <Link href={"/sources/my sources"}>My sources</Link>
+          {" > "}
+          <span className="font-semibold">{fixedCollection}</span>
+        </div>
+      ) : (
         <div className="text-2xl mb-3 font-semibold">
-        <span className="font-semibold">{fixedCollection}</span>
-      </div>
-      )
-    }
-      
+          <span className="font-semibold">{fixedCollection}</span>
+        </div>
+      )}
+
       <div className="grid gap-3 w-full grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
         {sources &&
           fixedCollection != "Archived" &&
@@ -536,6 +547,7 @@ const Collection = () => {
           deleteCollection={deleteCollection}
           updateSourceCollection={updateSourceCollection}
           setEditNameModalOpen={setEditNameModalOpen}
+          setShareDialogueOpen={setShareDialogueOpen}
         />
       )}
       <RenameDialogue
@@ -555,6 +567,14 @@ const Collection = () => {
         setSourceProviderCollections={setSourceProviderCollections}
         renameSource={renameSource}
         renameCollection={renameCollection}
+      />
+      <ShareDialogue
+        open={shareDialogueOpen}
+        setOpen={setShareDialogueOpen}
+        sourceTitle={getNameFromID(contextMenuSourceID)}
+        userName={userDoc ? userDoc.name : "name"}
+        userEmail={currentUser ? currentUser.email : "email"}
+        sourceID={contextMenuSourceID}
       />
     </>
   );

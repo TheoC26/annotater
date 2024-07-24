@@ -19,6 +19,7 @@ const CustomContextMenu = ({
   collections,
   deleteCollection,
   setEditNameModalOpen,
+  setShareDialogueOpen,
 }) => {
   const [organize, setOrganize] = useState(false);
 
@@ -39,12 +40,17 @@ const CustomContextMenu = ({
           <>
             <button
               className="flex gap-2 items-center p-1 hover:bg-gray-100 cursor-pointer rounded-md"
-              onClick={() => {setEditNameModalOpen(true)}}
+              onClick={() => {
+                setEditNameModalOpen(true);
+              }}
             >
               <EditIcon className="w-5 h-5" />
               <div>Rename</div>
             </button>
-            <button className="flex gap-2 items-center p-1 hover:bg-gray-100 cursor-pointer rounded-md">
+            <button
+              className="flex gap-2 items-center p-1 hover:bg-gray-100 cursor-pointer rounded-md"
+              onClick={() => setShareDialogueOpen(true)}
+            >
               <ShareIcon className="w-5 h-5" />
               <div>Share</div>
             </button>
@@ -73,7 +79,9 @@ const CustomContextMenu = ({
           <>
             <button
               className="flex gap-2 items-center p-1 hover:bg-gray-100 cursor-pointer rounded-md"
-              onClick={() => {setEditNameModalOpen(true)}}
+              onClick={() => {
+                setEditNameModalOpen(true);
+              }}
             >
               <EditIcon className="w-5 h-5" />
               <div>Rename</div>

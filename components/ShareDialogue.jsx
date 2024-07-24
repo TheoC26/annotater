@@ -50,7 +50,7 @@ const ShareDialogue = ({
             }}
           >
             <div className="flex justify-between items-center">
-              <div className="font-medium">Share {sourceTitle}</div>
+              <div className="font-medium">Share: {sourceTitle}</div>
               <button className="rounded-lg transition-all hover:bg-gray-100" onClick={() => setOpen(false)}>
                 <CloseIcon className="scale-90" />
               </button>
