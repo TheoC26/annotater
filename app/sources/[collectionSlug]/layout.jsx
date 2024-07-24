@@ -32,6 +32,7 @@ import SearchingModal from "@/components/home/SearchingModal";
 import MenuIcon from "@/components/svg/MenuIcon";
 import Logo from "@/components/svg/Logo";
 import LongLogo from "@/components/svg/LongLogo";
+import PlusIcon from "@/components/svg/PlusIcon";
 
 export default function SourcesLayout({ children }) {
   const { collectionSlug } = useParams();
@@ -401,6 +402,12 @@ export default function SourcesLayout({ children }) {
           />
         )}
         <ToastContainer />
+        <button
+          className="fixed bottom-3 leading-tight right-3 p-3 rounded-full bg-accent shadow-md scale-110 font-extrabold"
+          onClick={() => setModalState(true)}
+        >
+          <PlusIcon />
+        </button>
       </main>
       {/* <main className="hidden sm:hidden">
         <header className="w-full p-3 flex gap-3 fixed left-0 top-0 right-0 bg-background">

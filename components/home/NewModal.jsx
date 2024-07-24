@@ -91,11 +91,11 @@ const NewModal = ({ setModalState, collection }) => {
 
   return (
     <button
-      className="fixed inset-0 grid place-content-center"
+      className="fixed inset-0 sm:grid place-content-center z-20 pt-10"
       onClick={() => setModalState(false)}
     >
       <div
-        className=" w-[30rem] md:w-[40rem] lg:w-[55rem] h-[35rem] bg-white rounded-3xl shadow-lg p-3 relative overflow-hidden cursor-default"
+        className="w-full h-full sm:w-[30rem] md:w-[40rem] lg:w-[55rem] sm:h-[35rem] bg-white rounded-t-2xl sm:rounded-3xl shadow-lg p-3 relative overflow-hidden cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -104,7 +104,7 @@ const NewModal = ({ setModalState, collection }) => {
         >
           <CloseIcon />
         </button>
-        <div className="mx-12 flex align-middle justify-center flex-col h-full">
+        <div className="mx-3 sm:mx-12 flex align-middle justify-center flex-col h-full">
           {sourceText.length < 51 && (
             <>
               {/* <div className="bg-accent rounded-full p-4 px-9 text-lg font-bold text-center mt-6 w-fit mx-auto transition-all cursor-pointer hover:scale-105 hover:shadow-lg">
