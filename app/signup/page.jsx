@@ -54,20 +54,11 @@ const Signup = () => {
   }
 
   return (
-    <main className="bg-white h-[100vh]">
+    <main className="bg-white h-full">
       <header className="flex justify-between font-bold p-3 px-6 text-base items-center">
         <div className="flex items-center gap-12">
           <Link href={"/"}>
             <Logo />
-          </Link>
-          <Link href={"/features"} className=" mt-1">
-            Features
-          </Link>
-          <Link href={"/pricing"} className=" mt-1">
-            Pricing
-          </Link>
-          <Link href={"/about"} className=" mt-1">
-            About
           </Link>
         </div>
         <div className="flex items-center gap-12">
@@ -152,7 +143,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
-      <div className="flex align-middle left-6 fixed bottom-3 justify-center w-full font-bold text-lg flex-row">
+      <div className="flex align-middle left-6 fixed bottom-3 justify-center w-full font-bold text-lg flex-row bg-white">
         <div>Already have an account? </div>
         <Link className="text-accent cursor-pointer mx-3" href={"/login"}>
           log in!
