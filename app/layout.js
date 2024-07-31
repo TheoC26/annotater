@@ -6,7 +6,7 @@ import { SourceProvider } from "@/context/SourceContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Sigma Notes",
+  title: "Notator",
   description: "Annotation and note-taking app",
 };
 

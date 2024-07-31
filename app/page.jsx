@@ -275,11 +275,11 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="mt-20 max-w-screen-xl mx-auto">
+        {/* <section className="mt-20 max-w-screen-xl mx-auto">
           <h1 className="text-3xl text-center font-medium mb-72">
             Get started now
           </h1>
-        </section>
+        </section> */}
         <Footer />
       </main>
       <div

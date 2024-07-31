@@ -355,13 +355,13 @@ export default function SourcesLayout({ children }) {
               </div>
               <Link
                 href={"/sources/favorites"}
-                className="text-base font-semibold mt-2"
+                className="text-base font-semibold mt-2 rounded-md hover:bg-gray-200 pl-1 -ml-1 pr-3"
               >
                 Favorites
               </Link>
               <Link
                 href={"/sources/archived"}
-                className="text-base font-semibold mt-2"
+                className="text-base font-semibold mt-2 rounded-md hover:bg-gray-200 pl-1 -ml-1 pr-3"
               >
                 Archived
               </Link>
@@ -403,7 +403,7 @@ export default function SourcesLayout({ children }) {
         )}
         <ToastContainer />
         <button
-          className="fixed bottom-3 leading-tight right-3 p-3 rounded-full bg-accent shadow-md scale-110 font-extrabold"
+          className="fixed bottom-3 leading-tight right-3 p-3 rounded-full bg-accent shadow-md scale-110 font-extrabold transition-all hover:scale-105"
           onClick={() => setModalState(true)}
         >
           <PlusIcon />
