@@ -29,6 +29,7 @@ import { sendShareEmail } from "@/app/lib/mail";
 import ProfileModal from "@/components/ProfileModal";
 import ShareDialogue from "@/components/ShareDialogue";
 import Logo from "@/components/svg/Logo";
+import LogoS from "@/components/svg/LogoS";
 
 const Source = () => {
   const { source } = useParams();
@@ -41,6 +42,7 @@ const Source = () => {
   const [currentSpan, setCurrentSpan] = useState(null);
   const [currentOutline, setCurrentOutline] = useState("Annotated Source");
   const [sourceCollection, setSourceCollection] = useState("");
+  const [mainUserID, setMainUserID] = useState("");
 
   const [isValidDocument, setIsValidDocument] = useState(true);
 
@@ -375,6 +377,7 @@ const Source = () => {
         setTitleText(data.name);
         setSourceCollection(data.collection);
         setFullSource(data.fullSource);
+        setMainUserID(data.mainUser);
 
         console.log(fullSourceRef.current);
         console.log(commentsIndexArrayRef.current);
@@ -517,13 +520,10 @@ const Source = () => {
   useEffect(() => {
     console.log(currentUser);
     if (!currentUser && !authLoading) {
-      window.location.replace("/login");
+      // window.location.replace("/login");
+      return;
     } else if (currentUser) {
-      checkIfUserDocExists().then((exists) => {
-        if (!exists) {
-          window.location.replace("/signup/onboarding");
-        }
-      });
+      checkIfUserDocExists();
     }
   }, [authLoading, currentUser]);
 
@@ -576,7 +576,7 @@ const Source = () => {
       );
 
       const rect = currentSpan.getBoundingClientRect();
-      console.log(rect)
+      console.log(rect);
 
       const spans = annotatedSourceRef.current.querySelectorAll("span");
       // on click set the current span to the clicked span
@@ -590,7 +590,9 @@ const Source = () => {
       if (window.innerWidth > 768) {
         commentBoxRef.current.style.top = `${rect.top + window.scrollY - 20}px`;
       } else {
-        commentBoxRef.current.style.top = `${rect.top + window.scrollY + rect.height + 10}px`;
+        commentBoxRef.current.style.top = `${
+          rect.top + window.scrollY + rect.height + 10
+        }px`;
       }
       // commentBoxTitleRef.current.innerText = comment.type.toUpperCase();
       // commentBoxContentRef.current.innerText = comment.content;
@@ -611,26 +613,24 @@ const Source = () => {
         <div className="flex justify-between items-center py-3 px-5 bg-background">
           <div className="flex gap-5 flex-1">
             <Link href={"/sources"}>
-              <Logo className={"mt-2"} />
+              <LogoS className={"mt-2"} />
             </Link>
             <div className="flex-col w-full pr-6">
-              {/* <input
-                className="font-bold text-base md:text-xl w-full bg-transparent pl-2 -ml-2"
-                value={titleText}
-                onChange={(e) => setTitleText(e.target.value)}
-                onKeyUp={processTitleChange}
-              /> */}
               {isEditingName ? (
                 <input
                   className="font-bold text-base md:text-xl w-full bg-transparent pl-2 -ml-2"
                   value={titleText}
                   onChange={(e) => setTitleText(e.target.value)}
                   onKeyUp={processTitleChange}
+                  autoFocus
                 />
               ) : (
                 <div
                   className="font-bold text-base md:text-xl w-full bg-transparent pl-2 -ml-2 line-clamp-1"
-                  onClick={() => setIsEditingName(true)}
+                  onClick={() => {
+                    if (!currentUser || currentUser.uid !== mainUserID) return;
+                    setIsEditingName(true);
+                  }}
                 >
                   {titleText}
                 </div>
@@ -641,25 +641,43 @@ const Source = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between gap-4">
-            <Link
-              href={"/sources"}
-              className="p-3 px-4 md:px-6 bg-gray-200 rounded-full flex gap-2 transition-all hover:scale-105 hover:shadow-lg hover:bg-accent"
-            >
-              <SourcesIcon />
-              <div className="font-semibold hidden md:block">Sources</div>
-            </Link>
-            <button
-              onClick={() => setShareDialogueOpen(!shareDialogueOpen)}
-              className="p-3 px-4 md:px-6 bg-gray-200 rounded-full flex gap-2 transition-all hover:scale-105 hover:shadow-lg hover:bg-accent"
-            >
-              <ShareIcon />
-              <div className="font-semibold hidden md:block">Share</div>
-            </button>
-            <ProfileModal initial={userDoc && userDoc.name[0].toUpperCase()} />
-          </div>
+          {!authLoading && currentUser ? (
+            <div className="flex items-center justify-between gap-4">
+              <Link
+                href={"/sources"}
+                className="p-3 px-4 md:px-6 bg-gray-200 rounded-full flex gap-2 transition-all hover:scale-105 hover:shadow-lg hover:bg-accent"
+              >
+                <SourcesIcon />
+                <div className="font-semibold hidden md:block">Sources</div>
+              </Link>
+              <button
+                onClick={() => setShareDialogueOpen(!shareDialogueOpen)}
+                className="p-3 px-4 md:px-6 bg-gray-200 rounded-full flex gap-2 transition-all hover:scale-105 hover:shadow-lg hover:bg-accent"
+              >
+                <ShareIcon />
+                <div className="font-semibold hidden md:block">Share</div>
+              </button>
+              <ProfileModal
+                initial={userDoc && userDoc.name[0].toUpperCase()}
+              />
+            </div>
+          ) : !authLoading && (
+            <div className="flex items-center justify-between gap-4">
+              <Link
+                href={"/login"}
+                className="p-2 leading-tight bg-accent border-2 border-accent px-4 rounded-xl text-white font-bold text-xl transition-all hover:shadow-lg hover:scale-105"
+              >
+                Login
+              </Link>
+              <Link
+                href={"#learn-more"}
+                className="p-2 leading-tight border-2 border-accent px-4 rounded-xl text-accent font-bold text-xl hidden sm:block transition-all hover:shadow-lg hover:scale-105"
+              >
+                Try for free
+              </Link>
+            </div>
+          )}
         </div>
-        {/* <div className="w-full h-[1px] bg-black opacity-20 px-6"></div> */}
       </header>
       <div className="h-20"></div>
       {isValidDocument ? (
