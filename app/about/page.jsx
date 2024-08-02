@@ -1,7 +1,7 @@
-"use client"
-import Header from '@/components/about/Header';
-import MobileHeader from '@/components/about/mobileHeader';
-import React, { useState } from 'react'
+"use client";
+import Header from "@/components/about/Header";
+import MobileHeader from "@/components/about/MobileHeader";
+import React, { useState } from "react";
 
 const About = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,6 +13,6 @@ const About = () => {
       <MobileHeader menuOpen={menuOpen} />
     </>
   );
-}
+};
 
-export default About
+export default About;

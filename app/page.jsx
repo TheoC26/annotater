@@ -2,7 +2,7 @@
 import Footer from "@/components/Footer";
 import AnnotationCard from "@/components/about/AnnotationCard";
 import Header from "@/components/about/Header";
-import MobileHeader from "@/components/about/mobileHeader";
+import MobileHeader from "@/components/about/MobileHeader";
 import AnnotateIcon from "@/components/svg/AnnotateIcon";
 import AnnotaterLogo from "@/components/svg/AnnotaterLogo";
 import CloseIcon from "@/components/svg/CloseIcon";
@@ -26,7 +26,7 @@ export default function Home() {
       <main className="">
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Squig className="w-full h-full absolute -z-10" />
-        <section className="mb-64 md:mb-56 lg:mb-20 flex flex-col items-leading p-3 md:p-10 lg:p-16 pt-28 lg:pt-40 gap-10 lg:gap-20 xl:gap-24">
+        <section className="mb-64 md:mb-56 lg:mb-20 flex flex-col items-leading px-3 md:px-10 lg:px-16 lg:pb-16 pt-28 md:pt-40 gap-10 lg:gap-20 xl:gap-24">
           <div className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold">
             Elevate Your <br />{" "}
             <span className=" underline text-accent">Understanding</span>
@@ -48,19 +48,19 @@ export default function Home() {
           <AnnotationCard
             type={"setting"}
             content={
-              "This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious"
+              "This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious."
             }
             styles={
-              "left-16 lg:left-auto lg:right-10 xl:right-32 rotate-6 lg:rotate-12 scale-110 top-[23rem] md:top-[25rem] lg:top-32 xl:top-48"
+              "left-16 md:left-auto md:right-10 xl:right-32 rotate-6 md:rotate-12 scale-110 top-[23rem] md:top-[25rem] md:top-32 xl:top-48"
             }
           />
           <AnnotationCard
             type={"analysis"}
             content={
-              "This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious"
+              "The ESH guidelines specifically advise against using cuffless measurement devices due to concerns about accuracy and the requirement for periodic calibration."
             }
             styles={
-              "hidden md:block right-10 lg:right-32 xl:right-80 -rotate-3 scale-105 top-[25rem] lg:top-[20rem] xl:top-[25rem]"
+              "hidden md:block right-10 lg:right-32 xl:right-80 -rotate-3 scale-105 top-[23rem] lg:top-[20rem] xl:top-[25rem]"
             }
           />
         </section>
@@ -237,7 +237,8 @@ export default function Home() {
                 Analyze
               </h3>
               <p className="text-sm lg:text-base w-4/5 mb-6 md:text-right">
-                Save time reading and gain a deaper understanding of what you read with the power of Notator.
+                Save time reading and gain a deaper understanding of what you
+                read with the power of Notator.
               </p>
             </div>
           </div>

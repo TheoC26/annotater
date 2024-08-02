@@ -1,7 +1,7 @@
 "use client";
 import Footer from "@/components/Footer";
 import Header from "@/components/about/Header";
-import MobileHeader from "@/components/about/mobileHeader";
+import MobileHeader from "@/components/about/MobileHeader";
 import AnnotateIcon from "@/components/svg/AnnotateIcon";
 import SummerizeIcon from "@/components/svg/SummerizeIcon";
 import UnderlineDecoration from "@/components/svg/UnderlineDecoration";
