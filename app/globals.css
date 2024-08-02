@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
-  --background-color: #F8F8F8;
-  --accent-color: #C6BCEF;
+  --background-color: #f8f8f8;
+  --accent-color: #c6bcef;
 }
 
 html {
@@ -18,7 +17,7 @@ body {
 
 .annotatedSource {
   span {
-    background-color: #C6BCEF8a;
+    background-color: #c6bcef8a;
     padding: 2.3px;
     cursor: pointer;
     transition: all ease-in-out 150ms;
@@ -28,34 +27,33 @@ body {
     background-color: #c6bcefd6;
   }
   .selected-span {
-    background-color: #C6BCEF;
-  
+    background-color: #c6bcef;
   }
 }
 
 .annotatedSource span {
-  background-color: #C6BCEF8a;
-    padding: 2.3px;
-    cursor: pointer;
-    transition: all ease-in-out 150ms;
+  background-color: #c6bcef8a;
+  padding: 2.3px;
+  cursor: pointer;
+  transition: all ease-in-out 150ms;
 }
 .annotatedSource span:hover {
   background-color: #c6bcefd6;
 }
 .annotatedSource .selected-span {
-  background-color: #C6BCEF;
+  background-color: #c6bcef;
 }
 
 #commentBox::after {
   /* a small triangle that appears on the left side that makes it look like a speach bubble */
-  content: '';
+  content: "";
   position: absolute;
   top: 40px;
   left: -10px;
   width: 0;
   height: 0;
   border: 10px solid transparent;
-  border-right-color: #C6BCEF;
+  border-right-color: #c6bcef;
   border-left: 0;
   margin-top: -10px;
   /* make it a triangle using clip */
@@ -63,13 +61,13 @@ body {
 }
 
 /* if the screen is less than 768 then make the commentBox::after on the top of the commentBox */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   #commentBox::after {
     top: 0px;
     left: 20%;
     transform: translateX(-50%);
     border: 10px solid transparent;
-    border-bottom-color: #C6BCEF;
+    border-bottom-color: #c6bcef;
     border-top: 0;
     margin-left: -10px;
     clip-path: polygon(0 100%, 50% 0, 100% 100%);
@@ -77,9 +75,17 @@ body {
 }
 
 .loadingAnimatedGradient {
-  background: linear-gradient(270deg, rgb(243 244 246), rgb(249 250 251), rgb(243 244 246));
+  background: linear-gradient(
+    300deg,
+    rgb(230, 230, 230),
+    rgb(249 250 251),
+    rgb(230, 230, 230),
+    rgb(249 250 251),
+    rgb(230, 230, 230),
+    rgb(249 250 251)
+  );
   background-size: 600% 600%;
-  animation: gradient 2s linear infinite;
+  animation: gradient 4s linear infinite;
 }
 
 @keyframes gradient {

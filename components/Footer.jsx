@@ -14,8 +14,7 @@ const Footer = () => {
             </div>
 
             <p class="max-w-md mx-auto mt-6 leading-relaxed text-center text-gray-600 sm:max-w-xs sm:mx-0 sm:text-left">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt
-              consequuntur amet culpa cum itaque neque.
+              All in one tool to annotate, summarize, note take, and analyze sources so you can focus on the learning.
             </p>
 
             <ul class="flex justify-center gap-6 mt-8 md:gap-8 sm:justify-start">
@@ -84,7 +83,7 @@ const Footer = () => {
                 </Link>
               </li>
 
-              <li>
+              {/* <li>
                 <Link
                   href="/"
                   rel="noopener noreferrer"
@@ -105,9 +104,9 @@ const Footer = () => {
                     />
                   </svg>
                 </Link>
-              </li>
+              </li> */}
 
-              <li>
+              {/* <li>
                 <Link
                   href="/"
                   rel="noopener noreferrer"
@@ -128,13 +127,13 @@ const Footer = () => {
                     />
                   </svg>
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
           <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 md:grid-cols-4">
             <div class="text-center sm:text-left">
-              <p class="text-lg font-medium text-gray-700">About Us</p>
+              <p class="text-lg font-medium text-gray-700">Links</p>
 
               <nav class="mt-8">
                 <ul class="space-y-4 text-sm">
@@ -143,34 +142,34 @@ const Footer = () => {
                       class="text-gray-700 transition hover:text-gray-500"
                       href="/"
                     >
-                      Company History
+                      Home
                     </Link>
                   </li>
 
                   <li>
                     <Link
                       class="text-gray-700 transition hover:text-gray-500"
-                      href="/"
+                      href="/features"
                     >
-                      Meet the Team
+                      Features
                     </Link>
                   </li>
 
                   <li>
                     <Link
                       class="text-gray-700 transition hover:text-gray-500"
-                      href="/"
+                      href="/pricing"
                     >
-                      Employee Handbook
+                      Pricing
                     </Link>
                   </li>
 
                   <li>
                     <Link
                       class="text-gray-700 transition hover:text-gray-500"
-                      href="/"
+                      href="/about"
                     >
-                      Careers
+                      About
                     </Link>
                   </li>
                 </ul>
@@ -272,12 +271,12 @@ const Footer = () => {
                     </svg>
 
                     <span class="text-gray-700 transition group-hover:text-gray-700/75">
-                      john@doe.com
+                      notator.app@gmail.com
                     </span>
                   </Link>
                 </li>
 
-                <li>
+                {/* <li>
                   <Link
                     class="flex items-center justify-center sm:justify-start gap-1.5 group"
                     href="/"
@@ -301,7 +300,7 @@ const Footer = () => {
                       0123456789
                     </span>
                   </Link>
-                </li>
+                </li> */}
 
                 <li class="flex items-start justify-center gap-1.5 sm:justify-start">
                   <svg
@@ -325,7 +324,7 @@ const Footer = () => {
                   </svg>
 
                   <address class="-mt-0.5 not-italic text-gray-700">
-                    213 Lane, London, United Kingdom
+                    New York, NY
                   </address>
                 </li>
               </ul>
@@ -340,7 +339,7 @@ const Footer = () => {
 
               <Link
                 class="inline-block text-accent underline transition hover:opacity-75"
-                href="/"
+                href="/terms"
               >
                 Terms & Conditions
               </Link>
@@ -356,7 +355,7 @@ const Footer = () => {
             </p>
 
             <p class="mt-4 text-sm text-gray-500 sm:order-first sm:mt-0">
-              &copy; 2024 Company Name
+              &copy; 2024 Notator
             </p>
           </div>
         </div>

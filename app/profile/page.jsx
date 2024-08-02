@@ -24,6 +24,7 @@ import EditIcon from "@/components/svg/EditIcon";
 import SourcesIcon from "@/components/svg/SourcesIcon";
 import Footer from "@/components/Footer";
 import Logo from "@/components/svg/Logo";
+import LogoS from "@/components/svg/LogoS";
 
 const ProfilePage = () => {
   const { currentUser, logout, authLoading } = useAuth();
@@ -33,7 +34,7 @@ const ProfilePage = () => {
   const [isEditingName, setIsEditingName] = useState(false);
 
   const checkIfUserDocExists = async () => {
-    const userRef = doc(db, "usersv2", currentUser.uid);
+    const userRef = doc(db, "users", currentUser.uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       setUserDoc(userDoc.data());
@@ -49,7 +50,7 @@ const ProfilePage = () => {
         toast.error("Name cannot be empty");
         return;
       }
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       await updateDoc(userRef, {
         name: userName,
       });
@@ -61,7 +62,7 @@ const ProfilePage = () => {
 
   const updateType = async (type) => {
     try {
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       await updateDoc(userRef, {
         type: type,
       });
@@ -73,7 +74,7 @@ const ProfilePage = () => {
 
   const eraseAllContent = async () => {
     try {
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       await updateDoc(userRef, {
         collections: [],
         sources: [],
@@ -94,7 +95,7 @@ const ProfilePage = () => {
   const deleteAccount = async () => {
     try {
       eraseAllContent();
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       await deleteDoc(userRef);
       await logout();
       toast.success("Account deleted successfully");
@@ -123,7 +124,7 @@ const ProfilePage = () => {
         <>
           <header className="flex justify-between w-full h-fit items-center mt-1 gap-6 p-3 px-5">
             <Link href={"/sources"}>
-              <Logo className="mb-1" />
+              <LogoS className="mb-1" />
             </Link>
 
             <div className="flex items-center gap-6">

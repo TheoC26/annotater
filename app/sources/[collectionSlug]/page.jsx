@@ -163,7 +163,7 @@ const Collection = () => {
   };
 
   const getCollections = async () => {
-    const userRef = doc(db, "usersv2", currentUser.uid);
+    const userRef = doc(db, "users", currentUser.uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       const userCollections = userDoc.data().collections;
@@ -177,7 +177,7 @@ const Collection = () => {
   const renameCollection = async (newName) => {
     const collectionName = contextMenuSourceIDRef.current;
     try {
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         const userCollections = userDoc.data().collections;
@@ -226,7 +226,7 @@ const Collection = () => {
   const deleteCollection = async () => {
     const collectionName = contextMenuSourceIDRef.current;
     try {
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         const userCollections = userDoc.data().collections;
@@ -290,7 +290,7 @@ const Collection = () => {
     toggleArchiveSource(sourceID);
 
     // if source collection is not in user collections, add it
-    const userRef = doc(db, "usersv2", currentUser.uid);
+    const userRef = doc(db, "users", currentUser.uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       let userCollections = userDoc.data().collections;
@@ -363,7 +363,7 @@ const Collection = () => {
 
     // get userDoc
     const getUserDoc = async () => {
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         setUserDoc(userDoc.data());

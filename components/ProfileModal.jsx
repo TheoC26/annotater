@@ -13,7 +13,7 @@ const ProfileModal = ({ initial }) => {
   const [userDoc, setUserDoc] = useState(null);
 
   const checkIfUserDocExists = async () => {
-    const userRef = doc(db, "usersv2", currentUser.uid);
+    const userRef = doc(db, "users", currentUser.uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       setUserDoc(userDoc.data());

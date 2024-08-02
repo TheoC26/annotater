@@ -1,6 +1,8 @@
 "use client";
 import Footer from "@/components/Footer";
 import AnnotationCard from "@/components/about/AnnotationCard";
+import Header from "@/components/about/Header";
+import MobileHeader from "@/components/about/mobileHeader";
 import AnnotateIcon from "@/components/svg/AnnotateIcon";
 import AnnotaterLogo from "@/components/svg/AnnotaterLogo";
 import CloseIcon from "@/components/svg/CloseIcon";
@@ -22,40 +24,7 @@ export default function Home() {
   return (
     <>
       <main className="">
-        <header className="flex justify-between font-bold p-3 px-2 pr-5 md:px-5 text-base items-center fixed top-0 w-full bg-gradient-to-b from-white to-transparent z-20">
-          <div className="hidden md:flex items-center gap-12">
-            <LongLogo className="mb-1 ml-1 md:ml-3" />
-            <Link href={"/features"} className=" mt-1">
-              Features
-            </Link>
-            <Link href={"/pricing"} className=" mt-1">
-              Pricing
-            </Link>
-            <Link href={"/about"} className=" mt-1">
-              About
-            </Link>
-          </div>
-          <div className="hidden md:flex items-center gap-6 lg:gap-12">
-            <Link href={"/login"} className=" mt-1">
-              Login
-            </Link>
-            <Link
-              href={"/signup"}
-              className=" mt-1 p-3 px-4 text-white bg-accent rounded-xl"
-            >
-              Try for free
-            </Link>
-          </div>
-          <div className="md:hidden mt-1">
-            <LongLogo className="mb-1 ml-3" />
-          </div>
-          <button
-            className={`md:hidden ${!menuOpen && "scale-110"}`}
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <CloseIcon /> : <MenuIcon />}
-          </button>
-        </header>
+        <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Squig className="w-full h-full absolute -z-10" />
         <section className="mb-64 md:mb-56 lg:mb-20 flex flex-col items-leading p-3 md:p-10 lg:p-16 pt-28 lg:pt-40 gap-10 lg:gap-20 xl:gap-24">
           <div className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold">
@@ -268,9 +237,7 @@ export default function Home() {
                 Analyze
               </h3>
               <p className="text-sm lg:text-base w-4/5 mb-6 md:text-right">
-                Annotate your sources with ease with our unique approach to
-                learning allowing you to gain deep understanding from the exact
-                words on the page.
+                Save time reading and gain a deaper understanding of what you read with the power of Notator.
               </p>
             </div>
           </div>
@@ -282,41 +249,7 @@ export default function Home() {
         </section> */}
         <Footer />
       </main>
-      <div
-        className={`fixed w-full h-full bg-white flex flex-col justify-between pt-20 p-10 bottom-0 transition-all ${
-          menuOpen ? "top-0" : "top-full"
-        }`}
-      >
-        <div className="h-0.5 w-full bg-gray-200 -mt-3"></div>
-        <div className="flex flex-col gap-3 text-lg font-medium">
-          <Link href={"/features"} className=" mt-1">
-            Features
-          </Link>
-          <div className="h-0.5 w-full bg-gray-200"></div>
-          <Link href={"/pricing"} className=" mt-1">
-            Pricing
-          </Link>
-          <div className="h-0.5 w-full bg-gray-200"></div>
-          <Link href={"/about"} className=" mt-1">
-            About
-          </Link>
-        </div>
-        <div></div>
-        <div className="flex justify-around items-center gap-6 font-bold -mx-10">
-          <Link
-            href={"/login"}
-            className=" mt-1 p-3 px-6 border border-gray-300 rounded-xl"
-          >
-            Login
-          </Link>
-          <Link
-            href={"/signup"}
-            className=" mt-1 p-3 px-6 text-white bg-accent rounded-xl"
-          >
-            Try for free
-          </Link>
-        </div>
-      </div>
+      <MobileHeader menuOpen={menuOpen} />
     </>
   );
 }

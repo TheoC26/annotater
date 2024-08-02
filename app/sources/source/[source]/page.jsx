@@ -79,7 +79,7 @@ const Source = () => {
   const [isEditingName, setIsEditingName] = useState(false);
 
   const checkIfUserDocExists = async () => {
-    const userRef = doc(db, "usersv2", currentUser.uid);
+    const userRef = doc(db, "users", currentUser.uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       setUserDoc(userDoc.data());
@@ -151,33 +151,83 @@ const Source = () => {
     return response.choices[0].message.content;
   }
 
+  // async function promptAIComments(text) {
+  //   let prompt = `Given this source, output a list json response of annotations in this exact format:
+
+  //       [ { type: "this is the type of annotation in a single word (eg. setting, analysis, character)", content: "This is the content of the annotation or what would be written in the margins (eg. This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious.)", quote: "This is the direct quote from the source which should be highlighted in correspondence with the annotation. It should be around a sentence or two long and include the entirety of the quote. You must not under any circumstance use three dots (ellipsis) to shorten the quote.", }, { type: "this is the type of annotation in a single word (eg. setting, analysis, character)", content: "This is the content of the annotation or what would be written in the margins (eg. This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious.)", quote: "This is the direct quote from the source which should be highlighted in correspondence with the annotation. It should be around a sentence or two long and include the entirety of the quote. You must not under any circumstance use three dots (ellipsis) to shorten the quote.", }, { type: "this is the type of annotation in a single word (eg. setting, analysis, character)", content: "This is the content of the annotation or what would be written in the margins (eg. This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious.)", quote: "This is the direct quote from the source which should be highlighted in correspondence with the annotation. It should be around a sentence or two long and include the entirety of the quote. You must not under any circumstance use three dots (ellipsis) to shorten the quote.", }, ]
+
+  //       Add as many objects to the array as deemed necessary but make sure they are only the very most important. Here is the source:
+  //       ${text}`;
+
+  //   try {
+  //     const jsonString = await promptOpenAI(prompt);
+  //     console.log(jsonString);
+  //     console.log(jsonString.split("```")[1].replace("json", ""));
+  //     const parsedJson = JSON.parse(
+  //       jsonString.split("```")[1].replace("json", "")
+  //     );
+  //     setCommentsArray(parsedJson);
+  //     commentsArrayRef.current = parsedJson;
+  //     const commentText = convertSourceToHighlightedText(text, parsedJson);
+  //     console.log(commentText);
+  //     annotatedSourceRef.current.innerHTML = commentText;
+  //     setCommentsText(commentText);
+  //   } catch (error) {
+  //     console.error("Parsing error:", error);
+  //     promptAIComments(text);
+  //   }
+
+  // }
   async function promptAIComments(text) {
-    let prompt = `Given this source, output a list json response of annotations in this exact format:
+    const maxLength = 8000;
+    const thresholdLength = 10000;
+    let commentsArray = [];
+
+    async function processChunk(chunk) {
+      let prompt = `Given this source, output a list json response of annotations in this exact format:
 
         [ { type: "this is the type of annotation in a single word (eg. setting, analysis, character)", content: "This is the content of the annotation or what would be written in the margins (eg. This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious.)", quote: "This is the direct quote from the source which should be highlighted in correspondence with the annotation. It should be around a sentence or two long and include the entirety of the quote. You must not under any circumstance use three dots (ellipsis) to shorten the quote.", }, { type: "this is the type of annotation in a single word (eg. setting, analysis, character)", content: "This is the content of the annotation or what would be written in the margins (eg. This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious.)", quote: "This is the direct quote from the source which should be highlighted in correspondence with the annotation. It should be around a sentence or two long and include the entirety of the quote. You must not under any circumstance use three dots (ellipsis) to shorten the quote.", }, { type: "this is the type of annotation in a single word (eg. setting, analysis, character)", content: "This is the content of the annotation or what would be written in the margins (eg. This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious.)", quote: "This is the direct quote from the source which should be highlighted in correspondence with the annotation. It should be around a sentence or two long and include the entirety of the quote. You must not under any circumstance use three dots (ellipsis) to shorten the quote.", }, ]
 
         Add as many objects to the array as deemed necessary but make sure they are only the very most important. Here is the source:
-        ${text}`;
+        ${chunk}`;
 
-    try {
-      const jsonString = await promptOpenAI(prompt);
-      console.log(jsonString);
-      console.log(jsonString.split("```")[1].replace("json", ""));
-      const parsedJson = JSON.parse(
-        jsonString.split("```")[1].replace("json", "")
-      );
-      setCommentsArray(parsedJson);
-      commentsArrayRef.current = parsedJson;
-      const commentText = convertSourceToHighlightedText(text, parsedJson);
-      console.log(commentText);
-      annotatedSourceRef.current.innerHTML = commentText;
-      setCommentsText(commentText);
-    } catch (error) {
-      console.error("Parsing error:", error);
-      // promptAIComments(text);
+      try {
+        const jsonString = await promptOpenAI(prompt);
+        console.log(jsonString);
+        console.log(jsonString.split("```")[1].replace("json", ""));
+        const parsedJson = JSON.parse(
+          jsonString.split("```")[1].replace("json", "")
+        );
+        return parsedJson;
+      } catch (error) {
+        console.error("Parsing error:", error);
+        return processChunk(chunk); // Retry for the same chunk
+      }
     }
 
-    // const parsedJson = parseCommentTextToJson(jsonString);
+    if (text.length > thresholdLength) {
+      let start = 0;
+      while (start < text.length) {
+        let end = start + maxLength;
+        if (end > text.length) end = text.length;
+
+        const chunk = text.slice(start, end);
+        const chunkComments = await processChunk(chunk);
+        commentsArray = commentsArray.concat(chunkComments);
+
+        start = end;
+      }
+    } else {
+      commentsArray = await processChunk(text);
+    }
+
+    setCommentsArray(commentsArray);
+    commentsArrayRef.current = commentsArray;
+
+    const commentText = convertSourceToHighlightedText(text, commentsArray);
+    console.log(commentText);
+    annotatedSourceRef.current.innerHTML = commentText;
+    setCommentsText(commentText);
   }
 
   async function promptAISummary(text) {
@@ -345,7 +395,7 @@ const Source = () => {
         favorite: false,
       });
 
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         const userSources = userDoc.data().sources;
@@ -612,7 +662,7 @@ const Source = () => {
       <header className="fixed w-full z-20">
         <div className="flex justify-between items-center py-3 px-5 bg-background">
           <div className="flex gap-5 flex-1">
-            <Link href={"/sources"}>
+            <Link href={"/sources"} className="hidden sm:block">
               <LogoS className={"mt-2"} />
             </Link>
             <div className="flex-col w-full pr-6">
@@ -661,21 +711,23 @@ const Source = () => {
                 initial={userDoc && userDoc.name[0].toUpperCase()}
               />
             </div>
-          ) : !authLoading && (
-            <div className="flex items-center justify-between gap-4">
-              <Link
-                href={"/login"}
-                className="p-2 leading-tight bg-accent border-2 border-accent px-4 rounded-xl text-white font-bold text-xl transition-all hover:shadow-lg hover:scale-105"
-              >
-                Login
-              </Link>
-              <Link
-                href={"#learn-more"}
-                className="p-2 leading-tight border-2 border-accent px-4 rounded-xl text-accent font-bold text-xl hidden sm:block transition-all hover:shadow-lg hover:scale-105"
-              >
-                Try for free
-              </Link>
-            </div>
+          ) : (
+            !authLoading && (
+              <div className="flex items-center justify-between gap-4">
+                <Link
+                  href={"/login"}
+                  className="p-2 leading-tight bg-accent border-2 border-accent px-4 rounded-xl text-white font-bold text-xl transition-all hover:shadow-lg hover:scale-105"
+                >
+                  Login
+                </Link>
+                <Link
+                  href={"#learn-more"}
+                  className="p-2 leading-tight border-2 border-accent px-4 rounded-xl text-accent font-bold text-xl hidden sm:block transition-all hover:shadow-lg hover:scale-105"
+                >
+                  Try for free
+                </Link>
+              </div>
+            )
           )}
         </div>
       </header>

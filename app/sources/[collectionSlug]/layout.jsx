@@ -73,7 +73,7 @@ export default function SourcesLayout({ children }) {
     }
 
     try {
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         const userCollections = userDoc.data().collections;
@@ -95,7 +95,7 @@ export default function SourcesLayout({ children }) {
 
   const deleteCollection = async (collectionName) => {
     try {
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         const userCollections = userDoc.data().collections;
@@ -141,7 +141,7 @@ export default function SourcesLayout({ children }) {
   };
 
   const checkIfUserDocExists = async () => {
-    const userRef = doc(db, "usersv2", currentUser.uid);
+    const userRef = doc(db, "users", currentUser.uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       setUserDoc(userDoc.data());
@@ -213,7 +213,7 @@ export default function SourcesLayout({ children }) {
     if (!currentUser) return;
 
     const getCollections = async () => {
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         const userCollections = userDoc.data().collections;

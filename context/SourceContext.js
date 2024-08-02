@@ -1,7 +1,13 @@
 "use client";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { db } from "@/firebase";
-import { doc, updateDoc, deleteDoc, serverTimestamp, getDoc } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  deleteDoc,
+  serverTimestamp,
+  getDoc,
+} from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 
 const SourceContext = React.createContext();
@@ -11,10 +17,11 @@ export const useSource = () => {
 };
 
 export const SourceProvider = ({ children }) => {
-
   const { currentUser } = useAuth();
   const [sourceProviderError, setSourceProviderError] = useState(null);
-  const [sourceProviderCollections, setSourceProviderCollections] = useState([]);
+  const [sourceProviderCollections, setSourceProviderCollections] = useState(
+    []
+  );
 
   async function renameSource(sourceID, title) {
     try {
@@ -29,19 +36,21 @@ export const SourceProvider = ({ children }) => {
 
   async function renameCollection(collectionID, title) {
     try {
-      const userRef = doc(db, "usersv2", currentUser.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       const userDoc = await getDoc(userRef);
       const data = userDoc.data();
       const collections = data.collections;
 
-      const index = collections.findIndex((collection) => collection.id === collectionID);
+      const index = collections.findIndex(
+        (collection) => collection.id === collectionID
+      );
       collections[index] = title;
 
       await updateDoc(userRef, {
         collections: collections,
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setSourceProviderError("Error renaming collection");
     }
   }
@@ -78,7 +87,7 @@ export const SourceProvider = ({ children }) => {
 
       const docSnap = await getDoc(docRef);
       const data = docSnap.data();
-      console.log(data)
+      console.log(data);
 
       if (data.archiveDate == null) {
         await updateDoc(docRef, {
@@ -90,7 +99,7 @@ export const SourceProvider = ({ children }) => {
         });
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
       setSourceProviderError("Error archiving source");
     }
   }
@@ -103,9 +112,6 @@ export const SourceProvider = ({ children }) => {
       setSourceProviderError("Error deleting source");
     }
   }
-
-
-
 
   let value = {
     renameSource,

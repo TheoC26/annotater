@@ -52,7 +52,7 @@ const Onboarding = () => {
   const [subtitleContent, setSubtitleContent] = useState(content[0].subtitle);
 
   const checkIfUserDocExists = async () => {
-    const userRef = doc(db, "usersv2", currentUser.uid);
+    const userRef = doc(db, "users", currentUser.uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       return true;
@@ -85,7 +85,7 @@ const Onboarding = () => {
   }, [forWhat]);
 
   const createUserDoc = async () => {
-    const docRef = doc(db, "usersv2", currentUser.uid);
+    const docRef = doc(db, "users", currentUser.uid);
     await setDoc(docRef, {
       name: name,
       email: currentUser.email,
@@ -129,7 +129,7 @@ const Onboarding = () => {
               onClick={() => setForWhat("work")}
             >
               <div className="text-gray-600 font-semibold">For work</div>
-              <div className="text-gray-400 font-medium text-sm">
+              <div className="text-gray-400 font-medium text-sm text-left">
                 Annotate sources for my work and summarize long documents
               </div>
             </button>
@@ -142,7 +142,7 @@ const Onboarding = () => {
               onClick={() => setForWhat("school")}
             >
               <div className="text-gray-600 font-semibold">For school</div>
-              <div className="text-gray-400 font-medium text-sm">
+              <div className="text-gray-400 font-medium text-sm text-left">
                 Annotate sources for my school and analyze complex readings
               </div>
             </button>
@@ -155,7 +155,7 @@ const Onboarding = () => {
               onClick={() => setForWhat("personal")}
             >
               <div className="text-gray-600 font-semibold">For personal</div>
-              <div className="text-gray-400 font-medium text-sm">
+              <div className="text-gray-400 font-medium text-sm text-left">
                 Annotate sources for myself and increase productivity
               </div>
             </button>
