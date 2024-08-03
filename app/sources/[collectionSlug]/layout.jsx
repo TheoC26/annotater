@@ -390,7 +390,7 @@ export default function SourcesLayout({ children }) {
           </div>
         </div>
         <div className="flex-1">
-          <header className="flex justify-between w-full h-fit items-center mt-1 gap-6">
+          <header className="flex justify-between w-full h-fit items-center mt-1 gap-2 sm:gap-6">
             <div className="p-2.5 rounded-xl bg-gray-200 sm:hidden" onClick={() => setMobileDrawerState(true)}>
               <MenuIcon />
             </div>
