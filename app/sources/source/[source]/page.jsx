@@ -11,6 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DOMPurify from "dompurify";
 import OpenAI from "openai";
+import { v4 as uuid } from "uuid";
 
 import { db } from "@/firebase";
 import {
@@ -451,6 +452,49 @@ const Source = () => {
     }
   }
 
+  async function copySourceDoc() {
+    try {
+      const docRef = doc(db, "sources", source);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        const data = docSnap.data();
+
+        const newDocRef = doc(db, "sources", uuid());
+        await setDoc(newDocRef, {
+          fullSource: data.fullSource,
+          summary: data.summary,
+          notes: data.notes,
+          analysis: data.analysis,
+          collection: "my sources",
+          mainUser: currentUser.uid,
+          name: data.name,
+          annotationsArray: data.annotationsArray,
+          annotationsIndexArray: data.annotationsIndexArray,
+          createdAt: serverTimestamp(),
+          archiveDate: null,
+          favorite: false,
+        });
+
+        const userRef = doc(db, "users", currentUser.uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          const userSources = userDoc.data().sources;
+          userSources.push(newDocRef.id);
+          await updateDoc(userRef, {
+            sources: userSources,
+          });
+        }
+        toast.success("Source copied successfully.");
+        // redirect to new source
+        window.location.replace(`/sources/source/${newDocRef.id}`);
+      }
+    } catch {
+      toast.error("Error copying source. Please try again later.");
+    }
+  }
+
   const processTitleChange = debounce(
     () => renameSource(source, titleTextRef.current),
     1000
@@ -459,13 +503,11 @@ const Source = () => {
   useEffect(() => {
     function isElementInViewport(el) {
       const rect = el.getBoundingClientRect();
-      return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <=
-          (window.innerWidth || document.documentElement.clientWidth)
+      // if the rect.top is in the top half of the screen
+      return (rect.top <=
+        (window.innerHeight || document.documentElement.clientHeight) / 2 &&
+        (rect.bottom >=
+          (window.innerHeight || document.documentElement.clientHeight) / 2)
       );
     }
 
@@ -487,6 +529,7 @@ const Source = () => {
 
     window.addEventListener("scroll", (e) => {
       // IDK IF I WILL KEEP ASK TIMMY
+      // if (isLoading) return;
       if (isElementInViewport(analysisRef.current)) {
         setCurrentOutline("Analysis");
       } else if (isElementInViewport(notesRef.current)) {
@@ -662,7 +705,7 @@ const Source = () => {
       <header className="fixed w-full z-20">
         <div className="flex justify-between items-center py-3 px-5 bg-background">
           <div className="flex gap-5 flex-1">
-            <Link href={"/sources"} className="hidden sm:block">
+            <Link href={"/sources/my sources"} className="hidden sm:block">
               <LogoS className={"mt-2"} />
             </Link>
             <div className="flex-col w-full pr-6">
@@ -694,7 +737,7 @@ const Source = () => {
           {!authLoading && currentUser ? (
             <div className="flex items-center justify-between gap-4">
               <Link
-                href={"/sources"}
+                href={"/sources/my sources"}
                 className="p-3 px-4 md:px-6 bg-gray-200 rounded-full flex gap-2 transition-all hover:scale-105 hover:shadow-lg hover:bg-accent"
               >
                 <SourcesIcon />
@@ -790,7 +833,7 @@ const Source = () => {
             title={commentTitle}
             content={commentContent}
           />
-          <main className="ml-6 md:ml-52 mr-6 lg:mr-80 pt-6">
+          <main className="ml-6 md:ml-52 mr-6 lg:mr-80 pt-6 mb-[30vh]">
             <Section title={"Annotated Source"} isLoading={isLoading}>
               <div
                 ref={annotatedSourceRef}
@@ -819,11 +862,30 @@ const Source = () => {
               </div>
             </Section>
             <Section title={"Analysis"} isLoading={isLoading}>
-              <div ref={analysisRef} className={`${isLoading && "hidden"}`}>
+              <div
+                ref={analysisRef}
+                className={`${isLoading && "hidden"}`}
+              >
                 {analysisText}
               </div>
             </Section>
           </main>
+          {/* if user is logged in and user != mainUser */}
+          {!authLoading &&
+            mainUserID != "" &&
+            currentUser.uid !== mainUserID && (
+              <div className="fixed bottom-0 right-0 p-4 bg-background shadow-lg z-10 rounded-tl-xl flex flex-col items-end">
+                <div className="text-sm font-medium mb-2">
+                  You are viewing this source as a guest
+                </div>
+                <button
+                  className="text-xs p-3 px-4 rounded-xl bg-accent transition-all bg-opacity-50 hover:bg-opacity-100 font-bold"
+                  onClick={copySourceDoc}
+                >
+                  Copy to your own account
+                </button>
+              </div>
+            )}
         </>
       ) : (
         <div className="flex justify-center items-center h-[80vh]">

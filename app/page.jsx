@@ -5,6 +5,7 @@ import Header from "@/components/about/Header";
 import MobileHeader from "@/components/about/MobileHeader";
 import AnnotateIcon from "@/components/svg/AnnotateIcon";
 import AnnotaterLogo from "@/components/svg/AnnotaterLogo";
+import CheckIcon from "@/components/svg/CheckIcon";
 import CloseIcon from "@/components/svg/CloseIcon";
 import Logo from "@/components/svg/Logo";
 import LogoS from "@/components/svg/LogoS";
@@ -26,7 +27,7 @@ export default function Home() {
       <main className="">
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Squig className="w-full h-full absolute -z-10" />
-        <section className="mb-64 md:mb-56 lg:mb-20 flex flex-col items-leading px-3 md:px-10 lg:px-16 lg:pb-16 pt-28 md:pt-40 gap-10 lg:gap-20 xl:gap-24">
+        <section className="max-w-screen-2xl mx-auto mb-64 md:mb-56 lg:mb-20 flex flex-col items-leading px-3 md:px-10 lg:px-16 lg:pb-16 pt-28 md:pt-40 gap-10 lg:gap-20 xl:gap-24">
           <div className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold">
             Elevate Your <br />{" "}
             <span className=" underline text-accent">Understanding</span>
@@ -243,11 +244,69 @@ export default function Home() {
             </div>
           </div>
         </section>
-        {/* <section className="mt-20 max-w-screen-xl mx-auto">
-          <h1 className="text-3xl text-center font-medium mb-72">
+        <section className="mt-20 max-w-screen-xl mx-auto">
+          <h1 className="text-3xl text-center font-medium mb-16">
             Get started now
           </h1>
-        </section> */}
+          <div className="grid grid-cols-1 px-10 sm:px-40 md:px-60 lg:px-0 xl:px-20 lg:grid-cols-3 w-full gap-10">
+            <div className="bg-gray-200 h-full blur-md rounded-xl "></div>
+            <div className="bg-accent h-full scale-110 rounded-xl shadow-lg p-10">
+              <div className="font-semibold text-xl">Free</div>
+              <div className="text-[10px] opacity-80">
+                *There will always be a free version of this app
+              </div>
+              <Link href={"/signup"}>
+                <button className="p-2 px-6 rounded-xl bg-white text-sm font-semibold my-5 mx-auto">
+                  Get started
+                </button>
+              </Link>
+              <div className="h-0.5 rounded-full w-full bg-white"></div>
+              <div className="text-[10px] mt-5 mb-2 opacity-80 font-semibold">
+                Unlimited
+              </div>
+              <ul className="text-xs mb-2">
+                <li className="flex gap-2 mb-1">
+                  <div className="w-[12px] h-[12px]">
+                    <CheckIcon className="" />
+                  </div>
+                  <div className=" flex-shrink">
+                    Detailed annotated sources including highlights and
+                    descriptions
+                  </div>
+                </li>
+                <li className="flex gap-2 mb-1">
+                  <CheckIcon className="h-[12px] w-[12px]" />
+                  <div>Concise summaries</div>
+                </li>
+                <li className="flex gap-2 mb-1">
+                  <CheckIcon />
+                  <div>Succinct notes</div>
+                </li>
+                <li className="flex gap-2 mb-1">
+                  <CheckIcon />
+                  <div>Share to friends</div>
+                </li>
+                <li className="flex gap-2 mb-1">
+                  <CheckIcon />
+                  <div>Storage to store and search sources</div>
+                </li>
+                <li className="flex gap-2 mb-1">
+                  <CheckIcon />
+                  <div>Collections to easily organize your sources</div>
+                </li>
+                <li className="flex gap-2 mb-1">
+                  <CheckIcon />
+                  <div>PDF annotations (PDF OCR)</div>
+                </li>
+                <li className="flex gap-2 mb-1">
+                  <CheckIcon />
+                  <div>Up to 20,000 character count</div>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gray-200 h-full blur-md rounded-xl "></div>
+          </div>
+        </section>
         <Footer />
       </main>
       <MobileHeader menuOpen={menuOpen} />

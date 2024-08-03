@@ -20,7 +20,7 @@ const Login = () => {
   }, [currentUser]);
 
   function sendToHomePage() {
-    window.location.replace("/sources");
+    window.location.replace("/sources/my sources");
   }
 
   async function submitHandler() {

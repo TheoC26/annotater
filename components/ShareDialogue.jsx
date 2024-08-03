@@ -51,7 +51,10 @@ const ShareDialogue = ({
           >
             <div className="flex justify-between items-center">
               <div className="font-medium">Share: {sourceTitle}</div>
-              <button className="rounded-lg transition-all hover:bg-gray-100" onClick={() => setOpen(false)}>
+              <button
+                className="rounded-lg transition-all hover:bg-gray-100"
+                onClick={() => setOpen(false)}
+              >
                 <CloseIcon className="scale-90" />
               </button>
             </div>
@@ -73,7 +76,9 @@ const ShareDialogue = ({
             <button
               className="font-medium w-full h-10 px-3 bg-white text-black border border-1 rounded-lg mt-2"
               onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
+                navigator.clipboard.writeText(
+                  `https://www.notator.app/sources/source/${sourceID}`
+                );
                 toast.success("Link copied to clipboard");
               }}
             >

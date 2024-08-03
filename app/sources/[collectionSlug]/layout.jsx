@@ -254,12 +254,14 @@ export default function SourcesLayout({ children }) {
     <>
       <main className="flex flex-row mx-5 my-3 align-top h-full sm:flex">
         <div className=" w-72 mt-3 hidden sm:block">
-          <LongLogo />
+          <Link href={"/sources/my sources"}>
+            <LongLogo />
+          </Link>
           <button
             className="p-4 rounded-full bg-gray-200 flex w-fit mt-6 transition-all hover:scale-105 hover:shadow-lg"
             onClick={() => setModalState(true)}
           >
-            <div className="text-3xl leading-6 px-1 pb-1 font-medium rounded-full bg-accent shadow-lg">
+            <div className="text-3xl leading-6 px-1 pb-1 font-medium rounded-full bg-accent">
               +
             </div>
             <div className="mx-2 text-xl font-medium">New</div>
