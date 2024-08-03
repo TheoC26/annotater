@@ -33,10 +33,13 @@ import MenuIcon from "@/components/svg/MenuIcon";
 import Logo from "@/components/svg/Logo";
 import LongLogo from "@/components/svg/LongLogo";
 import PlusIcon from "@/components/svg/PlusIcon";
+import CloseIcon from "@/components/svg/CloseIcon";
+import CheckIcon from "@/components/svg/CheckIcon";
 
 export default function SourcesLayout({ children }) {
   const { collectionSlug } = useParams();
   const [modalState, setModalState] = useState(false);
+  const [mobileDrawerState, setMobileDrawerState] = useState(false);
   const [collections, setCollections] = useState([]);
   const [fixedCollection, setFixedCollection] = useState(
     collectionSlug.replace(/%20/g, " ")
@@ -253,7 +256,19 @@ export default function SourcesLayout({ children }) {
   return (
     <>
       <main className="flex flex-row mx-5 my-3 align-top h-full sm:flex">
-        <div className=" w-72 mt-3 hidden sm:block">
+        <div
+          className={`sm:w-72 sm:mt-2.5 fixed z-20 rounded-r-lg shadow-xl sm:rounded-none sm:shadow-none bg-white sm:bg-inherit p-6 sm:p-0 left-0 top-0 bottom-0 sm:static right-10 ${
+            mobileDrawerState ? "block" : "hidden"
+          } sm:block`}
+        >
+          <button
+            className={`absolute top-6 right-6 ${
+              mobileDrawerState ? "block" : "hidden"
+            } sm:hidden`}
+            onClick={() => setMobileDrawerState(false)}
+          >
+            <CloseIcon />
+          </button>
           <Link href={"/sources/my sources"}>
             <LongLogo />
           </Link>
@@ -322,16 +337,20 @@ export default function SourcesLayout({ children }) {
                         }
                       }}
                     />
-                    {/* <button
-                    className="text-xl leading-tight font-medium"
+                    <button
+                    className="text-xl leading-tight font-medium ml-2"
                     onClick={() => {
+                      if (addingCollectionInput.length == 0) {
+                        setIsAddingCollection(false);
+                        return;
+                      }
                       addCollection(addingCollectionInput);
                       setIsAddingCollection(false);
                       setAddingCollectionInput("");
                     }}
                   >
                     +
-                  </button> */}
+                  </button>
                   </div>
                 )}
                 {sourceProviderCollections.map((collection) => (
@@ -346,7 +365,7 @@ export default function SourcesLayout({ children }) {
                         collection.replace("%20", " ").slice(1)}
                     </Link>
                     <DeleteIcon
-                      className="w-5 h-5 hidden cursor-pointer group-hover:block transition-all hover:fill-red-400 hover:scale-110"
+                      className="w-5 h-5 block sm:hidden cursor-pointer group-hover:block transition-all hover:fill-red-400 hover:scale-110"
                       onClick={() => deleteCollection(collection)}
                     />
                   </div>
@@ -372,6 +391,9 @@ export default function SourcesLayout({ children }) {
         </div>
         <div className="flex-1">
           <header className="flex justify-between w-full h-fit items-center mt-1 gap-6">
+            <div className="p-2.5 rounded-xl bg-gray-200 sm:hidden" onClick={() => setMobileDrawerState(true)}>
+              <MenuIcon />
+            </div>
             <SearchingModal
               sources={filteredSources}
               searching={searching}

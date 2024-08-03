@@ -889,7 +889,7 @@ const Source = () => {
         </>
       ) : (
         <div className="flex justify-center items-center h-[80vh]">
-          <div className="text-2xl font-medium">
+          <div className="text-2xl font-medium text-center">
             Oops looks like this source doesn't exist!
           </div>
         </div>

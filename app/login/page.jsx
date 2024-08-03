@@ -5,6 +5,7 @@ import Link from "next/link";
 import AnnotaterLogo from "@/components/svg/AnnotaterLogo";
 import Image from "next/image";
 import Logo from "@/components/svg/Logo";
+import LogoS from "@/components/svg/LogoS";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -60,7 +61,7 @@ const Login = () => {
       <header className="flex justify-between font-bold p-3 px-6 text-base items-center">
         <div className="flex items-center gap-12">
           <Link href={"/"}>
-            <Logo />
+            <LogoS />
           </Link>
         </div>
         <div className="flex items-center gap-12">

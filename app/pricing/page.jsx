@@ -13,7 +13,7 @@ const Pricing = () => {
       <main>
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <section className="mt-32 max-w-screen-xl mx-auto">
-          <h1 className="text-3xl text-center font-semibold mb-16">Pricing</h1>
+          <h1 className="text-3xl text-center font-semibold mb-3 md:mb-16">Pricing</h1>
           <div className="grid grid-cols-1 px-10 sm:px-40 md:px-60 lg:px-0 xl:px-20 lg:grid-cols-3 w-full gap-10">
             <div className="bg-gray-200 h-full blur-md rounded-xl "></div>
             <div className="bg-accent h-full scale-110 rounded-xl shadow-lg p-10">
