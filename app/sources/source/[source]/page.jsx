@@ -872,7 +872,7 @@ const Source = () => {
           </main>
           {/* if user is logged in and user != mainUser */}
           {!authLoading &&
-            mainUserID != "" &&
+            mainUserID != "" && currentUser &&
             currentUser.uid !== mainUserID && (
               <div className="fixed bottom-0 right-0 p-4 bg-background shadow-lg z-10 rounded-tl-xl flex flex-col items-end">
                 <div className="text-sm font-medium mb-2">
