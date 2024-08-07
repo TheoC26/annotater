@@ -14,8 +14,8 @@ const Features = () => {
     <>
       <main>
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-        <section className="mt-40 md:mt-10 max-w-screen-xl mx-auto">
-          <h2 className="text-center font-bold text-xl mt-32 md:text-2xl mb-10 md:mb-0">
+        <section className="mt-20 sm:mt-40 md:mt-10 max-w-screen-xl mx-auto">
+          <h2 className="text-center font-bold text-xl md:mt-32 md:text-2xl mb-10 md:mb-0">
             All the features you need to boost your productivity
           </h2>
           <UnderlineDecoration className="mx-auto hidden md:block scale-75 -mt-2 mb-10 lg:mb-0" />

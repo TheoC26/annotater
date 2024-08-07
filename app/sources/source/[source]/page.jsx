@@ -61,6 +61,9 @@ const Source = () => {
   const notesRef = useRef(null);
   const analysisRef = useRef(null);
 
+  const [numberOfLoaded, setNumberOfLoaded] = useState(0);
+  const annotatingTextArray = ["Annotating...", "Summarizing...", "Notetaking...", "Analyzing..."];
+
   const [fullSource, setFullSource, fullSourceRef] = useStateRef(null);
   const [summaryText, setSummaryText, summeryTextRef] = useStateRef(null);
   const [notesText, setNotesText, notesTextRef] = useStateRef(null);
@@ -121,11 +124,15 @@ const Source = () => {
   }
 
   async function promptAI(prompt) {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    try {
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
 
-    return text;
+      return text;
+    } catch (error) {
+      toast.error("Error generating content. Please try again later.");
+    }
   }
 
   async function promptOpenAI(prompt) {
@@ -240,7 +247,7 @@ const Source = () => {
   }
 
   async function promptAINotes(text) {
-    let prompt = `Turn this summary into a bulleted summary. This summary should be very understandable and needs to come in the form of
+    let prompt = `Create a brief bulleted summary of this source. These bullets should be very understandable and needs to come in the form of
     - First bullet
     - Second bullet
     - Third bullet
@@ -252,7 +259,7 @@ const Source = () => {
   }
 
   async function promptAIAnalysis(text) {
-    let prompt = `Create an in depth but concise analysis of this source. It should be easy to follow and needs to not use ANY markdown styling: ${text}`;
+    let prompt = `Create an in depth but concise analysis of this source. It should be easy to follow and needs to NOT use ANY markdown styling which includes no * for bolding and no # for headers: ${text}`;
     const response = await promptAI(prompt);
     setAnalysisText(response);
   }
@@ -504,10 +511,11 @@ const Source = () => {
     function isElementInViewport(el) {
       const rect = el.getBoundingClientRect();
       // if the rect.top is in the top half of the screen
-      return (rect.top <=
-        (window.innerHeight || document.documentElement.clientHeight) / 2 &&
-        (rect.bottom >=
-          (window.innerHeight || document.documentElement.clientHeight) / 2)
+      return (
+        rect.top <=
+          (window.innerHeight || document.documentElement.clientHeight) / 2 &&
+        rect.bottom >=
+          (window.innerHeight || document.documentElement.clientHeight) / 2
       );
     }
 
@@ -631,6 +639,8 @@ const Source = () => {
     if (commentsTextRef.current !== null) numberOfLoaded++;
     if (titleTextRef.current !== null) numberOfLoaded++;
 
+    setNumberOfLoaded(numberOfLoaded);
+
     console.log(numberOfLoaded, "numberOfLoaded");
     if (numberOfLoaded < 5) return;
 
@@ -638,6 +648,7 @@ const Source = () => {
     createSourceDoc();
 
     setIsLoading(false);
+    setAnnotationMode(false);
   }, [summaryText, notesText, analysisText, commentsText, titleText]);
 
   useEffect(() => {
@@ -862,17 +873,45 @@ const Source = () => {
               </div>
             </Section>
             <Section title={"Analysis"} isLoading={isLoading}>
-              <div
-                ref={analysisRef}
-                className={`${isLoading && "hidden"}`}
-              >
+              <div ref={analysisRef} className={`${isLoading && "hidden"}`}>
                 {analysisText}
               </div>
             </Section>
           </main>
+          {annotationMode && (
+            <>
+              <div className="fixed inset-0 grid place-content-center blur-2xl">
+                <div className="w-[60vw] h-[50vh] bg-white bg-opacity-[.98] backdrop-blur-sm flex items-center py-20"></div>
+              </div>
+              <div className="fixed inset-0 grid place-content-center">
+                <div className="w-[40vw] h-[50vh] flex flex-col items-center justify-between">
+                  <div></div>
+                  <div className="w-full flex flex-col justify-center">
+                    <div className="text-center font-extrabold text-accent mb-2 text-xl">
+                      {annotatingTextArray[numberOfLoaded]}
+                    </div>
+                    <div className="w-full h-2 bg-gray-200 rounded-full">
+                      <div
+                        className="h-full bg-accent rounded-full transition-all"
+                        style={{
+                          width: `${(numberOfLoaded / 4) * 100}%`,
+                        }}
+                      ></div>
+                    </div>
+                    <div className="text-sm text-center mt-2 text-accent">
+                      this may take a couple minutes
+                    </div>
+                  </div>
+                  <div></div>
+                </div>
+              </div>
+            </>
+          )}
+
           {/* if user is logged in and user != mainUser */}
           {!authLoading &&
-            mainUserID != "" && currentUser &&
+            mainUserID != "" &&
+            currentUser &&
             currentUser.uid !== mainUserID && (
               <div className="fixed bottom-0 right-0 p-4 bg-background shadow-lg z-10 rounded-tl-xl flex flex-col items-end">
                 <div className="text-sm font-medium mb-2">

@@ -40,7 +40,7 @@ export default function Home() {
               Try for free
             </Link>
             <Link
-              href={"#learn-more"}
+              href={"/features"}
               className="p-3 leading-tight border-2 border-accent px-4 md:px-8 rounded-xl text-accent font-bold text-xl lg:text-2xl transition-all hover:shadow-lg hover:scale-105"
             >
               Learn more
@@ -52,7 +52,7 @@ export default function Home() {
               "This passage highlights the main scene of the story and introduces the main character. We learn her name is Elara and that she is curious."
             }
             styles={
-              "left-16 md:left-auto md:right-10 xl:right-32 rotate-6 md:rotate-12 scale-110 top-[23rem] md:top-[25rem] md:top-32 xl:top-48"
+              "left-16 md:left-auto md:right-10 xl:right-32 rotate-6 md:rotate-12 scale-110 top-[23rem] md:top-32 xl:top-48"
             }
           />
           <AnnotationCard
