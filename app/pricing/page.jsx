@@ -1,4 +1,5 @@
 "use client";
+import FAQs from "@/components/FAQs";
 import Footer from "@/components/Footer";
 import Header from "@/components/about/Header";
 import MobileHeader from "@/components/about/MobileHeader";
@@ -6,14 +7,45 @@ import CheckIcon from "@/components/svg/CheckIcon";
 import Link from "next/link";
 import React, { useState } from "react";
 
+const faqs = [
+  {
+    question: "Is Notator free to use?",
+    answer:
+      "Yes, Notator is currently free for all users. Enjoy all the features without any cost.",
+  },
+  {
+    question: "Will there be different pricing tiers in the future?",
+    answer:
+      "Yes, we plan to introduce different pricing tiers in the future. While there will always be a free tier, premium features may include access to longer sources, more specific analysis tools, and potentially some features that are currently free.",
+  },
+  {
+    question: "When will the new pricing tiers be launched?",
+    answer:
+      "We have not determined the exact launch date for the new pricing tiers. Stay tuned for updates.",
+  },
+  {
+    question: "Will there be any promotional offers for early adopters?",
+    answer: "There are no promotional offers or discounts for early adopters at this time.",
+  },
+  {
+    question: "What will be the limitations of the free tier?",
+    answer: "Currently, there are no limitations on the free tier. As we develop premium features, we will update our users on any changes.",
+  },
+];
+
+
 const Pricing = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+
   return (
     <>
       <main>
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <section className="mt-32 max-w-screen-xl mx-auto">
-          <h1 className="text-3xl text-center font-semibold mb-3 md:mb-16">Pricing</h1>
+          <h1 className="text-3xl text-center font-semibold mb-3 md:mb-16">
+            Pricing
+          </h1>
           <div className="grid grid-cols-1 px-10 sm:px-40 md:px-60 lg:px-0 xl:px-20 lg:grid-cols-3 w-full gap-10">
             <div className="bg-gray-200 h-full blur-md rounded-xl "></div>
             <div className="bg-accent h-full scale-110 rounded-xl shadow-lg p-10">
@@ -73,6 +105,8 @@ const Pricing = () => {
             <div className="bg-gray-200 h-full blur-md rounded-xl "></div>
           </div>
         </section>
+        <FAQs faqs={faqs} />
+
         <Footer />
       </main>
       <MobileHeader menuOpen={menuOpen} />

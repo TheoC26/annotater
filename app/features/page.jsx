@@ -1,4 +1,5 @@
 "use client";
+import FAQs from "@/components/FAQs";
 import Footer from "@/components/Footer";
 import Header from "@/components/about/Header";
 import MobileHeader from "@/components/about/MobileHeader";
@@ -7,6 +8,35 @@ import SummerizeIcon from "@/components/svg/SummerizeIcon";
 import UnderlineDecoration from "@/components/svg/UnderlineDecoration";
 import Image from "next/image";
 import React, { useState } from "react";
+
+const faqs = [
+  {
+    question: "What features does Notator offer?",
+    answer:
+      "Notator offers a range of features including:\n\n- Annotating: Highlight and add notes to your sources as if you were doing it manually.\n- Summarizing: Quickly generate summaries of long texts.\n- Note-Taking: Keep detailed notes on various readings and materials.\n- Analyzing: Dive deep into your content with analysis tools.\n- Sharing: Share your annotated sources with others.\n- Storing and Organizing: Save and organize your sources in a structured manner.",
+  },
+  {
+    question: "Can Notator be used for different types of sources?",
+    answer:
+      "Yes, Notator is versatile and can be used for annotating school readings such as history or English texts, work guidelines, tedious articles, and virtually any other type of source.",
+  },
+  {
+    question: "How do I share my annotated sources with others?",
+    answer:
+      "You can easily share your sources through Notator's sharing feature. Remember, all shared sources are anonymized to protect your privacy.",
+  },
+  {
+    question: "What types of annotations can I make with Notator?",
+    answer:
+      "You can highlight, add notes, and make detailed annotations that mimic human-like annotations, making it easier to engage with the material.",
+  },
+  {
+    question: "Is my data on Notator secure?",
+    answer:
+      "Absolutely. While shared sources are public and anonymized, all sensitive content remains private and is stored securely on your device.",
+  },
+];
+
 
 const Features = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,6 +94,9 @@ const Features = () => {
               </p>
             </div>
           </div>
+        </section>
+        <section>
+            <FAQs faqs={faqs} />
         </section>
         <Footer />
       </main>

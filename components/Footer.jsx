@@ -133,7 +133,7 @@ const Footer = () => {
 
           <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 md:grid-cols-4">
             <div class="text-center sm:text-left">
-              <p class="text-lg font-medium text-gray-700">Links</p>
+              <p class="text-lg font-medium text-gray-700">Quick Links</p>
 
               <nav class="mt-8">
                 <ul class="space-y-4 text-sm">
@@ -177,7 +177,7 @@ const Footer = () => {
             </div>
 
             <div class="text-center sm:text-left">
-              <p class="text-lg font-medium text-gray-700">Our Services</p>
+              <p class="text-lg font-medium text-gray-700">About us</p>
 
               <nav class="mt-8">
                 <ul class="space-y-4 text-sm">
